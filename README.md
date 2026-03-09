@@ -5,6 +5,34 @@ Designed to showcase **mobile UI, API integration, and data handling skills**, s
 Can be used as starting point for your next project or for showcase purposes.
 
 ---
+## Development
+
+- **React Native**
+- **Expo**
+- **CoinGecko**
+
+For all packages and dependencies, please refer to `package.json`.
+
+---
+
+## Features
+
+Preview of the app in action, for now, showcasing the home screen and portfolio screen in light and dark mode.
+
+- **Home screen** with most popular coins
+  <br></br>
+  ![Screenshot](docs/images/home-screen-light-mode.png)
+  <br></br>
+  ![Screenshot](docs/images/home-screen-dark-mode.png)
+  <br></br>
+
+- **Portfolio screen** with account balance and watchlist
+  <br></br>
+  ![Screenshot](docs/images/portfolio-screen-light-mode.png)
+  <br></br>
+  ![Screenshot](docs/images/portfolio-screen-dark-mode.png)
+
+---
 
 ## Features
 
@@ -22,7 +50,7 @@ Can be used as starting point for your next project or for showcase purposes.
 ## Features To Implement
 - **Authentication:** enable local host login with Auth0
 - **Market Categories:** Forex, Stocks
-- **Live Data Simulation:**
+- **Live Data Simulation**
 - **Search & Filter:** Implement search functionality to filter instruments by name or symbol.
 - **My Watchlist:** Allow users to add/remove instruments from their watchlist and persist it locally or API.
 - **Modal View:** When an instrument is clicked, display a modal with detailed information, including charts, price, change, volume, etc.

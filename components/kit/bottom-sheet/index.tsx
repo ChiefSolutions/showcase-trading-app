@@ -12,6 +12,7 @@ import {
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 // const SHEET_HEIGHT = SCREEN_HEIGHT * 0.5;
 
+// TODO - refactor
 const BottomSheetComponent = ({
   visible,
   onClose,
