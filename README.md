@@ -15,7 +15,7 @@ For all packages and dependencies, please refer to `package.json`.
 
 ---
 
-## Features
+## Screenshots
 
 Preview of the app in action, for now, showcasing the home screen and portfolio screen in light and dark mode.
 
