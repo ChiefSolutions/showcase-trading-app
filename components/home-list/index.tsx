@@ -8,10 +8,11 @@ import { CoinListItem } from '@/components/coins/coin';
 import { AnimatedLogo } from '@/components/kit';
 import { HOME_SECTION_TYPE } from '@/constants';
 import { useHomeSectionList } from '@/hooks';
+import { homeListKeyExtractor } from '@/utils';
 
 import { HomeListEmptyState } from './empty-state';
 import { HomeListHeader } from './header';
-import { RenderHomeListItem } from './home.types';
+import { HomeSectionListItem, RenderHomeListItem } from './home.types';
 
 export const HomeList = () => {
   const data = useHomeSectionList();
@@ -33,12 +34,17 @@ export const HomeList = () => {
     }
   }, []);
 
+  const getItemType = useCallback((item: HomeSectionListItem) => item.type, []);
+
   return (
     <View style={styles.flashListContainer}>
       <FlashList
         data={data}
         renderItem={renderItem}
+        getItemType={getItemType}
+        keyExtractor={homeListKeyExtractor}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.flashListContent}
       ></FlashList>
     </View>
   );
@@ -48,5 +54,8 @@ const styles = StyleSheet.create({
   flashListContainer: {
     flex: 1,
     paddingHorizontal: 16,
+  },
+  flashListContent: {
+    paddingBottom: 40,
   },
 });

@@ -12,7 +12,7 @@ export type HomeSectionType = (typeof HOME_SECTION_TYPE)[keyof typeof HOME_SECTI
 export type HomeSectionItemRow = { type: HomeSectionType; data: Coin };
 
 export type RenderHomeListItem = (
-  info: ListRenderItemInfo<HomeSectionListItemInfo>,
+  info: ListRenderItemInfo<HomeSectionListItem>,
 ) => JSX.Element | null;
 
 export interface HomeSectionHeader extends HeadingProps {
@@ -33,7 +33,7 @@ export interface HomeSection {
   emptyState?: HomeSectionEmptyState;
 }
 
-export interface HomeSectionListItemInfo extends HomeListHeaderProps {
+export interface HomeSectionListItem extends HomeListHeaderProps {
   type: HomeSectionType;
   data?: Coin;
   message?: string;

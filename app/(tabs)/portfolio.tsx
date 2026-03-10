@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { BottomSheet, Heading, Text } from '@/components/kit';
+import { Heading, Text } from '@/components/kit';
 import { WatchList } from '@/components/watchlist';
 import { TEXT_TYPE } from '@/constants';
 import { useStyles } from '@/theme';
@@ -45,12 +45,7 @@ export default function PortfolioScreen() {
           </View>
         </View>
       </View>
-      {/*<WatchList />*/}
-      <BottomSheet visible={true} onClose={() => console.log('onClose')} height={'75%'}>
-        <View style={{ height: 400 }}>
-          <WatchList />
-        </View>
-      </BottomSheet>
+      <WatchList />
     </View>
   );
 }
