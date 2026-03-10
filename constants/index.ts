@@ -1,1 +1,13 @@
+export { HOME_SECTION_TYPE } from './home';
+export { LINE_CHART_COLORS } from './line-chart';
+
+export const TEXT_TYPE = {
+  heading: 'heading',
+  headingXL: 'headingXL',
+  subHeading: 'subHeading',
+  subHeadingBold: 'subHeadingBold',
+  copy: 'copy',
+  copyLarge: 'copyLarge',
+  copyBold: 'copyBold',
+} as const;
 export const BASE_PRECISION = 2;

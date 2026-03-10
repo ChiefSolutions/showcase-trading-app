@@ -6,7 +6,7 @@ import { TextProps, TextType } from '@/components/kit/text/types';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 
-export const TextComponent: FC<TextProps> = ({ style, type, children }) => {
+export const TextComponent: FC<TextProps> = ({ style, type, children, ...props }) => {
   const styles = useStyles(_styles);
   const textStyles = useMemo(() => {
     if (style) {
@@ -15,7 +15,11 @@ export const TextComponent: FC<TextProps> = ({ style, type, children }) => {
     return styles[type];
   }, [style, styles, type]);
 
-  return <RNText style={textStyles}>{children}</RNText>;
+  return (
+    <RNText style={textStyles} {...props}>
+      {children}
+    </RNText>
+  );
 };
 
 export const Text = memo(TextComponent);

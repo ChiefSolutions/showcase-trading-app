@@ -9,7 +9,6 @@ import { Coin } from '@/components/coins/types';
 import { Heading } from '@/components/kit';
 import coins from '@/data/crypto.json';
 import { useStyles } from '@/theme';
-import { ThemeDefinitionColors } from '@/theme/types';
 import { getCoinsByCount } from '@/utils';
 
 const WatchListComponent: FC = () => {
@@ -28,21 +27,34 @@ const WatchListComponent: FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ paddingBottom: 16 }}>
-        <Heading title={'My Watchlist'} copy={'Coins that have been added to your watchlist.'} />
+      <View style={styles.headingContainer}>
+        <Heading
+          testID="watchlist-heading"
+          title={'My Watchlist'}
+          copy={'Coins that have been added to your watchlist.'}
+        />
       </View>
-      <FlashList data={list} keyExtractor={keyExtractor} renderItem={renderCoinItem} />
+      <FlashList
+        testID={'watchlist-flash-list'}
+        data={list}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={keyExtractor}
+        renderItem={renderCoinItem}
+      />
     </View>
   );
 };
 
 export const WatchList = memo(WatchListComponent);
 
-const _styles = (colors: ThemeDefinitionColors) => {
+const _styles = () => {
   return StyleSheet.create({
     container: {
       marginTop: 16,
       flex: 1,
+    },
+    headingContainer: {
+      paddingBottom: 16,
     },
   });
 };

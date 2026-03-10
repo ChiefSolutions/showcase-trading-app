@@ -9,7 +9,7 @@ export const getPriceChangePercentIndicator = (value: number) => {
   return value > 0 ? '▲ ' : '▼ ';
 };
 
-export const formatLineChartData: FormatLineChartData = (sparkline: any, isUp: boolean) => ({
+export const formatLineChartData: FormatLineChartData = (sparkline, isUp) => ({
   labels: [], // empty for mini charts
   datasets: [
     {
