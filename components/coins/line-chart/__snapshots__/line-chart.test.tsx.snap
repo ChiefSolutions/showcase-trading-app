@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoinChartLineComponent when the trend is down matches snapshot when trend is down 1`] = `
+<View
+  testID="mock-line-chart"
+>
+  <Text>
+    Line Color: 
+    rgba(255,50,50,1)
+  </Text>
+  <Text>
+    Width: 
+    100
+  </Text>
+  <Text>
+    Bezier: 
+    true
+  </Text>
+</View>
+`;
+
+exports[`CoinChartLineComponent when the trend is up matches snapshot when trend is up 1`] = `
+<View
+  testID="mock-line-chart"
+>
+  <Text>
+    Line Color: 
+    rgba(0,255,128,1)
+  </Text>
+  <Text>
+    Width: 
+    100
+  </Text>
+  <Text>
+    Bezier: 
+    true
+  </Text>
+</View>
+`;

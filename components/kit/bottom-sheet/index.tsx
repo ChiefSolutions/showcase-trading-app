@@ -1,138 +1,128 @@
-import React, { memo, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
-import {
-  Animated,
-  Dimensions,
-  PanResponder,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Animated, Dimensions, Modal, PanResponder, StyleSheet, View } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-// const SHEET_HEIGHT = SCREEN_HEIGHT * 0.5;
+const MAX_HEIGHT = SCREEN_HEIGHT * 0.9;
 
 // TODO - refactor
 const BottomSheetComponent = ({
   visible,
   onClose,
+  isFullScreen = true,
   height = '50%',
   showBackDrop = true,
   style,
   children,
 }: any) => {
-  const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+  // 1. Start "off-screen" using screen height as a safe initial buffer
+  const panY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+  const [modalHeight, setModalHeight] = useState(0);
+  const childRef = useRef<View | null>(null);
 
-  // Convert height prop → px
-  const sheetHeight = useMemo(() => {
-    if (typeof height === 'string' && height.includes('%')) {
-      return (parseFloat(height) / 100) * SCREEN_HEIGHT;
-    }
-    return height; // number = px
-  }, [height]);
+  const resetPositionAnim = Animated.timing(panY, {
+    toValue: 0,
+    duration: 300,
+    useNativeDriver: true,
+  });
 
-  const OPEN_POSITION = SCREEN_HEIGHT - sheetHeight;
+  const closeAnim = Animated.timing(panY, {
+    toValue: SCREEN_HEIGHT,
+    duration: 300,
+    useNativeDriver: true,
+  });
 
-  // Animate open/close
+  const handleDismiss = () => closeAnim.start(onClose);
+
+  // 2. Capture the height once the children render
+  const onLayout = () => {
+    setModalHeight(500);
+  };
+
   useEffect(() => {
     if (visible) {
-      Animated.spring(translateY, {
-        toValue: OPEN_POSITION,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.spring(translateY, {
-        toValue: SCREEN_HEIGHT,
-        useNativeDriver: true,
-      }).start();
+      resetPositionAnim.start();
     }
-  }, [visible, OPEN_POSITION, translateY]);
+  }, [resetPositionAnim, visible]);
 
-  // Drag logic
-  const panResponder = useRef(
+  const panResponders = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gesture) => {
-        return Math.abs(gesture.dy) > 5;
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        // Only take control if the user is swiping down
+        return Math.abs(gestureState.dy) > 5;
       },
-
-      onPanResponderMove: (_, gesture) => {
-        const newPosition = OPEN_POSITION + gesture.dy;
-
-        if (gesture.dy > 0) {
-          translateY.setValue(newPosition);
+      onPanResponderMove: Animated.event([null, { dy: panY }], {
+        useNativeDriver: false,
+      }),
+      onPanResponderRelease: (_, gs) => {
+        // 3. Logic: If dragged down more than 20% of its OWN height, close it
+        if (gs.dy > modalHeight * 0.2 || gs.vy > 1.5) {
+          return handleDismiss();
         }
-      },
-
-      onPanResponderRelease: (_, gesture) => {
-        if (gesture.dy > sheetHeight * 0.25) {
-          // close if dragged 25% down
-          Animated.spring(translateY, {
-            toValue: SCREEN_HEIGHT,
-            useNativeDriver: true,
-          }).start(() => onClose());
-        } else {
-          // snap back
-          Animated.spring(translateY, {
-            toValue: OPEN_POSITION,
-            useNativeDriver: true,
-          }).start();
-        }
+        return resetPositionAnim.start();
       },
     }),
   ).current;
 
   return (
-    <>
-      {/* Overlay */}
-      {visible && showBackDrop && (
-        <TouchableWithoutFeedback onPress={onClose}>
-          <View style={styles.overlay} />
-        </TouchableWithoutFeedback>
-      )}
-
-      {/* Bottom Sheet */}
-      <Animated.View
-        style={[
-          styles.sheet,
-          style, // 👈 allow overrides
-          {
-            transform: [{ translateY }],
-          },
-        ]}
-        {...panResponder.panHandlers}
-      >
-        {/* Handle */}
-        <View style={styles.handle} />
-
-        {children}
-      </Animated.View>
-    </>
+    <Modal animationType="fade" visible={true} transparent onRequestClose={handleDismiss}>
+      <View style={styles.overlay}>
+        {/* The TouchableWithoutFeedback could be added here to close on backdrop tap */}
+        <Animated.View
+          style={[
+            styles.container,
+            {
+              transform: [
+                {
+                  translateY: panY.interpolate({
+                    inputRange: [-1, 0, 1],
+                    outputRange: [0, 0, 1], // Prevents pulling the modal UP past its height
+                  }),
+                },
+              ],
+            },
+          ]}
+          onLayout={onLayout}
+        >
+          <View style={styles.sliderIndicatorRow} {...panResponders.panHandlers}>
+            <View style={styles.sliderIndicator} />
+          </View>
+          {children}
+        </Animated.View>
+      </View>
+    </Modal>
   );
 };
 
 export const BottomSheet = memo(BottomSheetComponent);
+
 const styles = StyleSheet.create({
   overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    justifyContent: 'flex-end', // Aligns modal to bottom
   },
-  sheet: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: SCREEN_HEIGHT, // full height container, we translate it
-    backgroundColor: '#121212',
-    borderTopLeftRadius: 20,
+  container: {
+    backgroundColor: 'white',
+    paddingTop: 12,
+    paddingBottom: 20,
+    paddingHorizontal: 12,
     borderTopRightRadius: 20,
-    padding: 16,
+    borderTopLeftRadius: 20,
+    // minHeight: 200, // Optional: prevents it looking too squished with tiny content
+    maxHeight: MAX_HEIGHT, // Lead Dev Tip: Always cap it so it doesn't cover the whole screen
   },
-  handle: {
-    width: 40,
+  sliderIndicatorRow: {
+    flexDirection: 'row',
+    marginBottom: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sliderIndicator: {
+    backgroundColor: '#CECECE',
     height: 5,
-    backgroundColor: '#666',
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginBottom: 10,
+    width: 40,
+    borderRadius: 10,
   },
 });

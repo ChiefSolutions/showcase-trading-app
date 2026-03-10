@@ -1,5 +1,9 @@
 import { LineChartData } from '@/types';
 
+interface CoinSparkline {
+  price: number[];
+}
+
 export interface Coin {
   id: string;
   symbol: string;
@@ -18,18 +22,16 @@ export interface Coin {
   market_cap_change_percentage_24h: number;
   circulating_supply: number;
   total_supply: number;
-  max_supply: any;
+  max_supply: number | null;
   ath: number;
   ath_change_percentage: number;
   ath_date: string;
   atl: number;
   atl_change_percentage: number;
   atl_date: string;
-  roi: any;
+  roi: { times: number; currency: string; percentage: number } | null;
   last_updated: string;
-  sparkline_in_7d: {
-    price: number[];
-  };
+  sparkline_in_7d: CoinSparkline;
 }
 
-export type FormatLineChartData = (sparkline: any, isUp: boolean) => LineChartData;
+export type FormatLineChartData = (sparkline: CoinSparkline, isUp: boolean) => LineChartData;
