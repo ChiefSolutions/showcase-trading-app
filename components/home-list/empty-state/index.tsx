@@ -13,8 +13,13 @@ export const HomeListEmptyStateComponent = ({ message }: { message: string }) =>
   const styles = useStyles(_styles);
   return (
     <View style={styles.emptyState}>
-      <MaterialIcons color={styles.infoIcon.color} size={32} name={'info-outline'} />
-      <Text type={TEXT_TYPE.subHeading} style={styles.text}>
+      <MaterialIcons
+        testID="empty-state-icon"
+        color={styles.infoIcon.color}
+        size={32}
+        name={'info-outline'}
+      />
+      <Text testID="empty-state-message" type={TEXT_TYPE.subHeading} style={styles.text}>
         {message}
       </Text>
     </View>

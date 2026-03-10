@@ -7,12 +7,12 @@ import { Heading } from '@/components/kit';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 
-export const HomeListHeaderComponent: FC<HomeListHeaderProps> = ({ style, copy, title }) => {
+const HomeListHeaderComponent: FC<HomeListHeaderProps> = ({ style, copy, title }) => {
   const styles = useStyles(_styles);
   const headerStyles = style ? { ...styles.sectionHeading, ...style } : styles.sectionHeading;
 
   return (
-    <View style={headerStyles}>
+    <View testID="home-list-header-container" style={headerStyles}>
       <Heading title={title ?? ''} copy={copy} />
     </View>
   );

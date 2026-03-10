@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 
 import { Coin } from '@/components/coins/types';
-import { HomeSectionItemRow, HomeSectionListItemInfo } from '@/components/home-list/home.types';
+import { HomeSectionItemRow, HomeSectionListItem } from '@/components/home-list/home.types';
 import coins from '@/data/crypto.json';
 import { getCoinsByCount, getHomeListSections } from '@/utils';
-import { sectionNames } from '@/utils/home/getHomeListSections';
+import { sectionNames } from '@/utils/home-list/getHomeListSections';
 
-type UseHomeSectionList = () => HomeSectionListItemInfo[];
+type UseHomeSectionList = () => HomeSectionListItem[];
 
 export const useHomeSectionList: UseHomeSectionList = () => {
   //TODO: replace with API CALL
@@ -20,7 +20,7 @@ export const useHomeSectionList: UseHomeSectionList = () => {
   }, [coinsData]);
 
   return useMemo(() => {
-    const list: HomeSectionListItemInfo[] = [];
+    const list: HomeSectionListItem[] = [];
     const sections = getHomeListSections(popular, watchlist);
 
     sections.forEach((section) => {

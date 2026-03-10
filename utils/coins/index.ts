@@ -1,5 +1,12 @@
-import { FormatLineChartData } from '@/components/coins/types';
+import { Coin, FormatLineChartData } from '@/components/coins/types';
 import { BASE_PRECISION } from '@/constants';
+
+
+
+
+
+
+
 
 export const getPriceChangePercentage = (value: number) => {
   return `${Math.abs(value).toFixed(BASE_PRECISION)}%`;
@@ -19,3 +26,7 @@ export const formatLineChartData: FormatLineChartData = (sparkline, isUp) => ({
     },
   ],
 });
+
+export const getCoinsByCount = (coins: Coin[], count: number) => {
+  return coins.slice(0, count);
+};

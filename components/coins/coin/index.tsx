@@ -2,16 +2,16 @@ import { FC, memo, useCallback } from 'react';
 
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
-import {
-  formatLineChartData,
-  getPriceChangePercentIndicator,
-  getPriceChangePercentage,
-} from '@/components/coins/popular/utils';
 import { Text } from '@/components/kit/text';
 import { TEXT_TYPE } from '@/constants';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
-import { formatCurrency } from '@/utils';
+import {
+  formatCurrency,
+  formatLineChartData,
+  getPriceChangePercentIndicator,
+  getPriceChangePercentage,
+} from '@/utils';
 
 import { CoinChartLine } from '../line-chart';
 import { Coin } from '../types';
