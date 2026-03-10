@@ -2,16 +2,16 @@ import { FC, memo, useCallback } from 'react';
 
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/kit/text';
+import { TEXT_TYPE } from '@/constants';
+import { useStyles } from '@/theme';
+import { ThemeDefinitionColors } from '@/theme/types';
 import {
+  formatCurrency,
   formatLineChartData,
   getPriceChangePercentIndicator,
   getPriceChangePercentage,
-} from '@/components/coins/popular/utils';
-import { Text } from '@/components/kit/text';
-import { TEXT_TYPE } from '@/constants/text';
-import { useStyles } from '@/theme';
-import { ThemeDefinitionColors } from '@/theme/types';
-import { formatCurrency } from '@/utils';
+} from '@/utils';
 
 import { CoinChartLine } from '../line-chart';
 import { Coin } from '../types';
@@ -45,27 +45,32 @@ const CoinListItemComponent: FC<CoinListItemProps> = ({ coin }) => {
   }, []);
 
   return (
-    <Pressable style={pressableStyles}>
+    <Pressable testID="coin-pressable" style={pressableStyles}>
       <View style={styles.leftContainer}>
-        <Image source={{ uri: coin.image }} style={styles.coinImage} />
+        <Image testID="coin-image" source={{ uri: coin.image }} style={styles.coinImage} />
         <View style={styles.coinNameAndSymbol}>
-          <Text type={TEXT_TYPE.copy} style={styles.coinName}>
+          <Text testID="coin-name" type={TEXT_TYPE.copy} style={styles.coinName}>
             {coin.name}
           </Text>
-          <Text type={TEXT_TYPE.copy} style={styles.coinSymbol}>
+          <Text testID="coin-symbol" type={TEXT_TYPE.copy} style={styles.coinSymbol}>
             {coin.symbol}
           </Text>
         </View>
       </View>
-      <View style={styles.middleContainer}>
+      <View testID="coin-line-chart" style={styles.middleContainer}>
         <CoinChartLine chartData={chartData} isUp={isUp} />
       </View>
       <View>
-        <Text type={TEXT_TYPE.copy} style={{ textAlign: 'right' }}>
+        <Text testID="coin-current-price" type={TEXT_TYPE.copy} style={{ textAlign: 'right' }}>
           {formatCurrency(coin.current_price)}
         </Text>
-        <Text type={TEXT_TYPE.copy} style={styles.priceChangePercentage}>
+        <Text
+          type={TEXT_TYPE.copy}
+          style={styles.priceChangePercentage}
+          testID="coin-price-change-percentage"
+        >
           <Text
+            testID="coin-price-change-arrow"
             type={TEXT_TYPE.copy}
             style={getPriceChangeIndicatorStyles(coin.price_change_percentage_24h)}
           >

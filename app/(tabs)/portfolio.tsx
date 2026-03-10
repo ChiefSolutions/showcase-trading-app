@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Heading, Text } from '@/components/kit';
 import { WatchList } from '@/components/watchlist';
-import { TEXT_TYPE } from '@/constants/text';
+import { TEXT_TYPE } from '@/constants';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 import { staticColors } from '@/theme/useTheme';

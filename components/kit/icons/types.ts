@@ -1,7 +1,7 @@
 export interface IconProps {
   color?: string;
   height?: number;
-  width?: number;
+  width?: number | string;
 }
 
 export interface TabIconProps {

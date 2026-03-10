@@ -26,7 +26,7 @@ const THEME: ThemeDefinition = {
       primary: '#333333',
       secondary: '#696969',
       subtle: '#9DA3A4',
-      surface: '#F8F9FB',
+      surface: '#F2F2F7', //#F2F2F7 #F8F9FB
       text: '#333333',
     },
   },

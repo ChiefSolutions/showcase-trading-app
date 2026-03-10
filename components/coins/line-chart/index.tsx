@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import { LineChart } from 'react-native-chart-kit';
 
+import { LINE_CHART_COLORS } from '@/constants';
 import { LineChartData } from '@/types';
 
 interface CoinChartLineComponentProps {
@@ -16,7 +17,10 @@ const CoinChartLineComponent: FC<CoinChartLineComponentProps> = ({ chartData, is
     return {
       backgroundGradientFromOpacity: 0,
       backgroundGradientToOpacity: 0,
-      color: (opacity = 1) => (isUp ? `rgba(0,255,128,${opacity})` : `rgba(255,50,50,${opacity})`),
+      color: (opacity = 1) =>
+        isUp
+          ? `rgba(${LINE_CHART_COLORS.isUp},${opacity})`
+          : `rgba(${LINE_CHART_COLORS.isDown},${opacity})`,
     };
   }, [isUp]);
 
