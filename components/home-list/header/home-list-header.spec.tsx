@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react-native';
 
-import { HomeListHeader } from '@/components/home-list/header/index';
+import { HomeListSectionHeader } from '@/components/home-list/header/index';
 
 const titleText = 'This is a header title';
 const copyText = 'This is a header copy';
@@ -9,7 +9,7 @@ const style = { backgroundColor: 'red' };
 describe('HomeListEmptyState', () => {
   describe('when rendered', () => {
     beforeEach(() => {
-      render(<HomeListHeader copy={copyText} title={titleText} style={style} />);
+      render(<HomeListSectionHeader copy={copyText} title={titleText} style={style} />);
     });
 
     it('should display the heading', () => {

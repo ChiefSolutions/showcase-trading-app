@@ -7,7 +7,7 @@ import { Heading } from '@/components/kit';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 
-const HomeListHeaderComponent: FC<HomeListHeaderProps> = ({ style, copy, title }) => {
+const HomeListSectionHeaderComponent: FC<HomeListHeaderProps> = ({ style, copy, title }) => {
   const styles = useStyles(_styles);
   const headerStyles = style ? { ...styles.sectionHeading, ...style } : styles.sectionHeading;
 
@@ -18,7 +18,7 @@ const HomeListHeaderComponent: FC<HomeListHeaderProps> = ({ style, copy, title }
   );
 };
 
-export const HomeListHeader = memo(HomeListHeaderComponent);
+export const HomeListSectionHeader = memo(HomeListSectionHeaderComponent);
 
 const _styles = (colors: ThemeDefinitionColors) => {
   return StyleSheet.create({

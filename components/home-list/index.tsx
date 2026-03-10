@@ -11,7 +11,7 @@ import { useHomeSectionList } from '@/hooks';
 import { homeListKeyExtractor } from '@/utils';
 
 import { HomeListEmptyState } from './empty-state';
-import { HomeListHeader } from './header';
+import { HomeListSectionHeader } from './header';
 import { HomeSectionListItem, RenderHomeListItem } from './home.types';
 
 export const HomeList = () => {
@@ -21,10 +21,8 @@ export const HomeList = () => {
     const { type } = item;
 
     switch (type) {
-      case HOME_SECTION_TYPE.SECTION_LOGO:
-        return <AnimatedLogo height={100} width={'100%'} />;
       case HOME_SECTION_TYPE.SECTION_HEADER:
-        return <HomeListHeader {...item} />;
+        return <HomeListSectionHeader {...item} />;
       case HOME_SECTION_TYPE.ITEM_ROW:
         return item.data ? <CoinListItem key={item.data.id} coin={item.data} /> : null;
       case HOME_SECTION_TYPE.EMPTY_STATE:
@@ -45,6 +43,7 @@ export const HomeList = () => {
         keyExtractor={homeListKeyExtractor}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flashListContent}
+        ListHeaderComponent={<AnimatedLogo height={100} width={'100%'} />}
       ></FlashList>
     </View>
   );

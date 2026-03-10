@@ -29,13 +29,13 @@ export interface HomeSection {
   name: string;
   header: HomeSectionHeader;
   hasItems: boolean;
-  items?: Coin[];
+  items: Coin[];
   emptyState?: HomeSectionEmptyState;
 }
 
 export interface HomeSectionListItem extends HomeListHeaderProps {
   type: HomeSectionType;
-  data?: Coin;
+  data: Coin;
   message?: string;
 }
 
