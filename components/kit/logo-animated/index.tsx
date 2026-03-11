@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 
-import { IconProps } from '@/components/kit/icons/types';
+import { IconProps } from '@/components/kit/icons/icons.types';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 

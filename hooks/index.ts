@@ -1,2 +1,2 @@
 export { useMount } from './mount';
-export { useHomeSectionList } from './home-section-list';
+export { useDashboardSectionList } from './dashboard-section-list';

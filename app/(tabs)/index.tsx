@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { HomeList } from '@/components/home-list';
+import { DashboardList } from '@/components/dashboard-list';
 import { ThemeDefinitionColors } from '@/theme/types';
 
-export default function HomeScreen() {
-  return <HomeList />;
+export default function DashboardScreen() {
+  return <DashboardList />;
 }
 
 const _styles = (colors: ThemeDefinitionColors) => {

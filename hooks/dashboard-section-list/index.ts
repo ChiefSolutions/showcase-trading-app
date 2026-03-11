@@ -1,14 +1,17 @@
 import { useMemo, useState } from 'react';
 
 import { Coin } from '@/components/coins/types';
-import { HomeSectionItemRow, HomeSectionListItem } from '@/components/home-list/home.types';
+import {
+  DashboardSectionItemRow,
+  DashboardSectionListItem,
+} from '@/components/dashboard-list/dashboard.types';
 import coins from '@/data/crypto.json';
-import { getCoinsByCount, getHomeListSections } from '@/utils';
-import { sectionNames } from '@/utils/home-list/getHomeListSections';
+import { getCoinsByCount, getDashboardListSections } from '@/utils';
+import { sectionNames } from '@/utils/dashboard-list/getDashboardListSections';
 
-type UseHomeSectionList = () => HomeSectionListItem[];
+type UseDashboardSectionList = () => DashboardSectionListItem[];
 
-export const useHomeSectionList: UseHomeSectionList = () => {
+export const useDashboardSectionList: UseDashboardSectionList = () => {
   //TODO: replace with API CALL
   const [coinsData] = useState<Coin[]>(coins.data as Coin[]);
   const popular = useMemo(() => {
@@ -20,8 +23,8 @@ export const useHomeSectionList: UseHomeSectionList = () => {
   }, [coinsData]);
 
   return useMemo(() => {
-    const list: HomeSectionListItem[] = [];
-    const sections = getHomeListSections(popular, watchlist);
+    const list: DashboardSectionListItem[] = [];
+    const sections = getDashboardListSections(popular, watchlist);
 
     sections.forEach((section) => {
       if (sectionNames.includes(section.name)) {
@@ -30,7 +33,7 @@ export const useHomeSectionList: UseHomeSectionList = () => {
         if (section.hasItems && section.items) {
           list.push(
             ...section.items.map(
-              (item) => ({ type: 'ITEM_ROW' as const, data: item }) as HomeSectionItemRow,
+              (item) => ({ type: 'ITEM_ROW' as const, data: item }) as DashboardSectionItemRow,
             ),
           );
           return;

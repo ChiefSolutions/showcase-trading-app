@@ -5,6 +5,9 @@ export type ThemeDefinitionColors = {
   highEmphasis: string;
   ink: string;
   onSurface: string;
+  modalBackground: string;
+  modalOverlay: string;
+  modalBorder: string;
   secondary: string;
   subtle: string;
   surface: string;

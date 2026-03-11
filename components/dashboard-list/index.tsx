@@ -6,33 +6,33 @@ import { FlashList } from '@shopify/flash-list';
 
 import { CoinListItem } from '@/components/coins/coin';
 import { AnimatedLogo } from '@/components/kit';
-import { HOME_SECTION_TYPE } from '@/constants';
-import { useHomeSectionList } from '@/hooks';
-import { homeListKeyExtractor } from '@/utils';
+import { DASHBOARD_SECTION_TYPE } from '@/constants';
+import { useDashboardSectionList } from '@/hooks';
+import { dashboardListKeyExtractor } from '@/utils';
 
-import { HomeListEmptyState } from './empty-state';
-import { HomeListSectionHeader } from './header';
-import { HomeSectionListItem, RenderHomeListItem } from './home.types';
+import { DashboardSectionListItem, RenderDashboardListItem } from './dashboard.types';
+import { DashboardListEmptyState } from './empty-state';
+import { DashboardListSectionHeader } from './header';
 
-export const HomeList = () => {
-  const data = useHomeSectionList();
+export const DashboardList = () => {
+  const data = useDashboardSectionList();
 
-  const renderItem: RenderHomeListItem = useCallback(({ item }) => {
+  const renderItem: RenderDashboardListItem = useCallback(({ item }) => {
     const { type } = item;
 
     switch (type) {
-      case HOME_SECTION_TYPE.SECTION_HEADER:
-        return <HomeListSectionHeader {...item} />;
-      case HOME_SECTION_TYPE.ITEM_ROW:
+      case DASHBOARD_SECTION_TYPE.SECTION_HEADER:
+        return <DashboardListSectionHeader {...item} />;
+      case DASHBOARD_SECTION_TYPE.ITEM_ROW:
         return item.data ? <CoinListItem key={item.data.id} coin={item.data} /> : null;
-      case HOME_SECTION_TYPE.EMPTY_STATE:
-        return <HomeListEmptyState message={item.message ?? ''} />;
+      case DASHBOARD_SECTION_TYPE.EMPTY_STATE:
+        return <DashboardListEmptyState message={item.message ?? ''} />;
       default:
         return null;
     }
   }, []);
 
-  const getItemType = useCallback((item: HomeSectionListItem) => item.type, []);
+  const getItemType = useCallback((item: DashboardSectionListItem) => item.type, []);
 
   return (
     <View style={styles.flashListContainer}>
@@ -40,7 +40,7 @@ export const HomeList = () => {
         data={data}
         renderItem={renderItem}
         getItemType={getItemType}
-        keyExtractor={homeListKeyExtractor}
+        keyExtractor={dashboardListKeyExtractor}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flashListContent}
         ListHeaderComponent={<AnimatedLogo height={100} width={'100%'} />}
