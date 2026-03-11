@@ -73,8 +73,12 @@ const BottomSheetSlidingContentComponent: FC<BottomSheetSlidingContentProps> = (
   ).current;
 
   return (
-    <Animated.View style={animatedViewStyles}>
-      <View style={styles.sliderIndicatorRow} {...panResponders.panHandlers}>
+    <Animated.View testID="bottom-sheet-sliding-content" style={animatedViewStyles}>
+      <View
+        testID="bottom-sheet-indicator-row"
+        style={styles.sliderIndicatorRow}
+        {...panResponders.panHandlers}
+      >
         <View style={styles.sliderIndicator} />
       </View>
       {children}

@@ -20,6 +20,7 @@ const BottomSheetComponent: FC<BottomSheetProps> = ({
     duration: 300,
     useNativeDriver: true,
   });
+
   const handleDismiss = useCallback(() => closeAnim.start(onClose), [closeAnim, onClose]);
 
   return (

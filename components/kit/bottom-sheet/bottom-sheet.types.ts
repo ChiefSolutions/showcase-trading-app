@@ -11,7 +11,7 @@ export interface BottomSheetProps {
   children: ReactNode;
 }
 
-export interface BottomSheetSlidingContentProps extends BottomSheetProps {
+export interface BottomSheetSlidingContentProps extends Omit<BottomSheetProps, 'onClose'> {
   handleDismiss: () => void;
   panY: Animated.Value;
 }
