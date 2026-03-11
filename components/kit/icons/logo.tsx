@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import Svg, { Path } from 'react-native-svg';
 
-import { IconProps } from '@/components/kit/icons/types';
+import { IconProps } from '@/components/kit/icons/icons.types';
 
 const LogoComponent: FC<IconProps> = ({ width = 200, height = 200, color = '#ffffff' }) => {
   return (

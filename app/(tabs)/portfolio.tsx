@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Heading, Text } from '@/components/kit';
-import { WatchList } from '@/components/watchlist';
 import { TEXT_TYPE } from '@/constants';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
@@ -45,7 +44,6 @@ export default function PortfolioScreen() {
           </View>
         </View>
       </View>
-      <WatchList />
     </View>
   );
 }

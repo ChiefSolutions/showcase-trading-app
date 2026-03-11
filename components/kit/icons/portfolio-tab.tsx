@@ -1,7 +1,6 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
-
-import { TabIconProps } from './types';
+import { TabIconProps } from './icons.types';
+import { Portfolio } from './portfolio';
 
 export const PortfolioTab = ({ color }: TabIconProps) => {
-  return <IconSymbol size={28} name="paperplane.fill" color={color} />;
+  return <Portfolio height={28} width={28} color={color} />;
 };

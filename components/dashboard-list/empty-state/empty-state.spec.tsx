@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react-native';
 
-import { HomeListEmptyState } from '@/components/home-list/empty-state/index';
+import { DashboardListEmptyState } from '@/components/dashboard-list/empty-state/index';
 
-describe('HomeListEmptyState', () => {
+describe('DashboardListEmptyState', () => {
   describe('when rendered', () => {
     beforeEach(() => {
-      render(<HomeListEmptyState message={'Nothing to show here'} />);
+      render(<DashboardListEmptyState message={'Nothing to show here'} />);
     });
 
     it('should display the empty state icon and message', () => {

@@ -1,30 +1,19 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, useCallback, useRef } from 'react';
 
-import { Animated, Dimensions, Modal, PanResponder, StyleSheet, View } from 'react-native';
+import { Animated, Modal, StyleSheet, View } from 'react-native';
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const MAX_HEIGHT = SCREEN_HEIGHT * 0.9;
+import { BottomSheetProps } from '@/components/kit/bottom-sheet/bottom-sheet.types';
+import { BottomSheetSlidingContent } from '@/components/kit/bottom-sheet/sliding-content';
+import { SCREEN_HEIGHT } from '@/constants';
 
 // TODO - refactor
-const BottomSheetComponent = ({
+const BottomSheetComponent: FC<BottomSheetProps> = ({
   visible,
   onClose,
-  isFullScreen = true,
-  height = '50%',
-  showBackDrop = true,
-  style,
+  isFullScreen = false,
   children,
-}: any) => {
-  // 1. Start "off-screen" using screen height as a safe initial buffer
+}) => {
   const panY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const [modalHeight, setModalHeight] = useState(0);
-  const childRef = useRef<View | null>(null);
-
-  const resetPositionAnim = Animated.timing(panY, {
-    toValue: 0,
-    duration: 300,
-    useNativeDriver: true,
-  });
 
   const closeAnim = Animated.timing(panY, {
     toValue: SCREEN_HEIGHT,
@@ -32,64 +21,20 @@ const BottomSheetComponent = ({
     useNativeDriver: true,
   });
 
-  const handleDismiss = () => closeAnim.start(onClose);
-
-  // 2. Capture the height once the children render
-  const onLayout = () => {
-    setModalHeight(500);
-  };
-
-  useEffect(() => {
-    if (visible) {
-      resetPositionAnim.start();
-    }
-  }, [resetPositionAnim, visible]);
-
-  const panResponders = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        // Only take control if the user is swiping down
-        return Math.abs(gestureState.dy) > 5;
-      },
-      onPanResponderMove: Animated.event([null, { dy: panY }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (_, gs) => {
-        // 3. Logic: If dragged down more than 20% of its OWN height, close it
-        if (gs.dy > modalHeight * 0.2 || gs.vy > 1.5) {
-          return handleDismiss();
-        }
-        return resetPositionAnim.start();
-      },
-    }),
-  ).current;
+  const handleDismiss = useCallback(() => closeAnim.start(onClose), [closeAnim, onClose]);
 
   return (
-    <Modal animationType="fade" visible={true} transparent onRequestClose={handleDismiss}>
+    <Modal animationType="fade" visible={visible} transparent onRequestClose={handleDismiss}>
       <View style={styles.overlay}>
-        {/* The TouchableWithoutFeedback could be added here to close on backdrop tap */}
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              transform: [
-                {
-                  translateY: panY.interpolate({
-                    inputRange: [-1, 0, 1],
-                    outputRange: [0, 0, 1], // Prevents pulling the modal UP past its height
-                  }),
-                },
-              ],
-            },
-          ]}
-          onLayout={onLayout}
+        {/* TODO: The TouchableWithoutFeedback could be added here to close on backdrop tap */}
+        <BottomSheetSlidingContent
+          visible={visible}
+          handleDismiss={handleDismiss}
+          panY={panY}
+          isFullScreen={isFullScreen}
         >
-          <View style={styles.sliderIndicatorRow} {...panResponders.panHandlers}>
-            <View style={styles.sliderIndicator} />
-          </View>
           {children}
-        </Animated.View>
+        </BottomSheetSlidingContent>
       </View>
     </Modal>
   );
@@ -102,27 +47,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     flex: 1,
     justifyContent: 'flex-end', // Aligns modal to bottom
-  },
-  container: {
-    backgroundColor: 'white',
-    paddingTop: 12,
-    paddingBottom: 20,
-    paddingHorizontal: 12,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    // minHeight: 200, // Optional: prevents it looking too squished with tiny content
-    maxHeight: MAX_HEIGHT, // Lead Dev Tip: Always cap it so it doesn't cover the whole screen
-  },
-  sliderIndicatorRow: {
-    flexDirection: 'row',
-    marginBottom: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sliderIndicator: {
-    backgroundColor: '#CECECE',
-    height: 5,
-    width: 40,
-    borderRadius: 10,
   },
 });

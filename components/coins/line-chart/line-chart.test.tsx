@@ -4,7 +4,7 @@ import { CoinChartLine } from '@/components/coins/line-chart/index';
 
 jest.mock('react-native-chart-kit', () => ({
   LineChart: (props: any) => {
-    const { View, Text } = require('react-native');
+    const { View, Text } = jest.requireActual('react-native');
     return (
       <View testID="mock-line-chart">
         {/* We call the color function to see its output in the snapshot */}

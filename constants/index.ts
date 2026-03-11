@@ -1,5 +1,6 @@
-export { HOME_SECTION_TYPE } from './home';
+export { DASHBOARD_SECTION_TYPE } from './home';
 export { LINE_CHART_COLORS } from './line-chart';
+export * from './bottom-sheet';
 
 export const TEXT_TYPE = {
   heading: 'heading',
