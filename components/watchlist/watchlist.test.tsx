@@ -1,17 +1,19 @@
 import React from 'react';
 
 import '@testing-library/jest-native/extend-expect';
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { render, screen, waitFor } from '@testing-library/react-native';
 
 import { WatchList } from './index';
 
 const renderComponent = () => {
   render(<WatchList />);
 };
-const user = userEvent.setup();
+
 describe('WatchList', () => {
   beforeEach(() => {
-    renderComponent();
+    waitFor(() => {
+      renderComponent();
+    });
   });
 
   describe('when rendered', () => {

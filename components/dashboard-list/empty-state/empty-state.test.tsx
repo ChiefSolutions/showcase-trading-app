@@ -12,7 +12,6 @@ describe('DashboardListEmptyState', () => {
       const icon = screen.getByTestId('empty-state-icon');
       const message = screen.getByTestId('empty-state-message');
 
-      screen.debug();
       expect(icon).toBeOnTheScreen();
       expect(message).toBeOnTheScreen();
     });
