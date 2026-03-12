@@ -1,51 +1,76 @@
-import React, { FC, memo, useCallback, useRef } from 'react';
+import React, { FC, memo, useRef } from 'react';
 
-import { Animated, Modal, StyleSheet, View } from 'react-native';
+import { Modal, StyleSheet, View } from 'react-native';
 
-import { BottomSheetProps } from '@/components/kit/bottom-sheet/bottom-sheet.types';
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { scheduleOnRN } from 'react-native-worklets';
+
+import { BottomSheetProps, BottomSheetRef } from '@/components/kit/bottom-sheet/bottom-sheet.types';
 import { BottomSheetSlidingContent } from '@/components/kit/bottom-sheet/sliding-content';
-import { SCREEN_HEIGHT } from '@/constants';
+import { useStyles } from '@/theme';
+import { ThemeDefinitionColors } from '@/theme/types';
 
 // TODO - refactor
 const BottomSheetComponent: FC<BottomSheetProps> = ({
   visible,
-  onClose,
+  onRequestClose,
   isFullScreen = false,
   children,
 }) => {
-  const panY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+  const sheetRef = useRef<BottomSheetRef>(null);
+  const styles = useStyles(_styles);
 
-  const closeAnim = Animated.timing(panY, {
-    toValue: SCREEN_HEIGHT,
-    duration: 300,
-    useNativeDriver: true,
+  const handBackdropTapDismiss = () => {
+    if (sheetRef.current) {
+      sheetRef.current.dismiss();
+      return;
+    }
+
+    onRequestClose();
+  };
+
+  const backdropTap = Gesture.Tap().onEnd(() => {
+    scheduleOnRN(handBackdropTapDismiss);
   });
 
-  const handleDismiss = useCallback(() => closeAnim.start(onClose), [closeAnim, onClose]);
-
   return (
-    <Modal animationType="fade" visible={visible} transparent onRequestClose={handleDismiss}>
-      <View style={styles.overlay}>
-        {/* TODO: The TouchableWithoutFeedback could be added here to close on backdrop tap */}
-        <BottomSheetSlidingContent
-          visible={visible}
-          handleDismiss={handleDismiss}
-          panY={panY}
-          isFullScreen={isFullScreen}
-        >
-          {children}
-        </BottomSheetSlidingContent>
-      </View>
+    <Modal
+      testID={'bottom-sheet-modal'}
+      animationType="none"
+      visible={visible}
+      transparent
+      onRequestClose={onRequestClose}
+    >
+      <GestureHandlerRootView>
+        <GestureDetector gesture={backdropTap}>
+          <View style={styles.overlay} testID="modal-backdrop" collapsable={false}>
+            {/* The content container is now a child of the overlay */}
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <GestureDetector gesture={Gesture.Tap()}>
+                <BottomSheetSlidingContent
+                  ref={sheetRef}
+                  visible={visible}
+                  onRequestClose={onRequestClose}
+                  isFullScreen={isFullScreen}
+                >
+                  {children}
+                </BottomSheetSlidingContent>
+              </GestureDetector>
+            </View>
+          </View>
+        </GestureDetector>
+      </GestureHandlerRootView>
     </Modal>
   );
 };
 
 export const BottomSheet = memo(BottomSheetComponent);
 
-const styles = StyleSheet.create({
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    flex: 1,
-    justifyContent: 'flex-end', // Aligns modal to bottom
-  },
-});
+const _styles = (color: ThemeDefinitionColors) => {
+  return StyleSheet.create({
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: color.modalOverlay,
+    },
+  });
+};

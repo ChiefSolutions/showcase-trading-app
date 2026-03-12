@@ -1,0 +1,9 @@
+# Ignore the entire test folder
+test/
+__tests__/
+
+# Ignore all test files throughout the project
+**/*.test.tsx
+**/*.test.ts
+**/*.spec.tsx
+**/*.spec.ts
