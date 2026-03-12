@@ -1,3 +1,5 @@
+export { createGesturePan } from './bottom-sheet/createGesturePan';
+export { dashboardListKeyExtractor } from './dashboard-list/keyExtractor';
 export {
   getPriceChangePercentage,
   getPriceChangePercentIndicator,
@@ -5,6 +7,7 @@ export {
   getCoinsByCount,
 } from './coins';
 export { getTabsScreenOptions } from './tabs/getTabsScreenOptions';
-export { getHomeListSections } from '@/utils/home-list/getHomeListSections';
-export { homeListKeyExtractor } from '@/utils/home-list/keyExtractor';
+export { getDashboardListSections } from './dashboard-list/getDashboardListSections';
+
 export * from './format';
+export * from './shared';

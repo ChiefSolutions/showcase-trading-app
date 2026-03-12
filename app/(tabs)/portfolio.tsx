@@ -1,7 +1,8 @@
+import { useCallback, useState } from 'react';
+
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Heading, Text } from '@/components/kit';
-import { WatchList } from '@/components/watchlist';
+import { BottomSheet, Heading, Text } from '@/components/kit';
 import { TEXT_TYPE } from '@/constants';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
@@ -9,7 +10,15 @@ import { staticColors } from '@/theme/useTheme';
 
 export default function PortfolioScreen() {
   const styles = useStyles(_styles);
+  const [visible, setVisible] = useState(false);
 
+  const handleShowModal = useCallback(() => {
+    setVisible(true);
+  }, []);
+
+  const handleOnClose = useCallback(() => {
+    setVisible(false);
+  }, []);
   return (
     <View style={styles.container}>
       <Heading
@@ -32,7 +41,7 @@ export default function PortfolioScreen() {
             </View>
           </View>
           <View style={styles.buttons}>
-            <Pressable style={styles.pressablePrimary}>
+            <Pressable style={styles.pressablePrimary} onPress={handleShowModal}>
               <Text type={TEXT_TYPE.copyBold} style={styles.depositButtonText}>
                 DEPOSIT
               </Text>
@@ -45,7 +54,15 @@ export default function PortfolioScreen() {
           </View>
         </View>
       </View>
-      <WatchList />
+
+      <BottomSheet visible={visible} onRequestClose={handleOnClose}>
+        <View>
+          <Heading
+            title={'Account Balance'}
+            copy={'Some funds may be reserved for trades or pending withdrawals.'}
+          />
+        </View>
+      </BottomSheet>
     </View>
   );
 }

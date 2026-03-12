@@ -1,6 +1,7 @@
 module.exports = {
   preset: 'jest-expo',
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
+  setupFiles: ['./node_modules/react-native-gesture-handler/jestSetup.js'],
   testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
   testPathIgnorePatterns: [
     '/assets/',
@@ -13,6 +14,6 @@ module.exports = {
     '/website/',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo.*|@expo.*|@shopify/flash-list|recyclerlistview|@react-navigation.*|@react-native-community.*|react-native-chart-kit|react-native-svg|react-native-reanimated|react-native-worklets)/)',
+    'node_modules/(?!(react-native|@react-native|expo.*|@expo.*|@shopify/flash-list|recyclerlistview|@react-navigation.*|@react-native-community.*|react-native-chart-kit|react-native-svg|react-native-reanimated|react-native-worklets|react-native-gesture-handler)/)',
   ],
 };

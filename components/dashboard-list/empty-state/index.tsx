@@ -9,7 +9,7 @@ import { TEXT_TYPE } from '@/constants';
 import { useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 
-export const HomeListEmptyStateComponent = ({ message }: { message: string }) => {
+export const DashboardListEmptyStateComponent = ({ message }: { message: string }) => {
   const styles = useStyles(_styles);
   return (
     <View style={styles.emptyState}>
@@ -26,7 +26,7 @@ export const HomeListEmptyStateComponent = ({ message }: { message: string }) =>
   );
 };
 
-export const HomeListEmptyState = memo(HomeListEmptyStateComponent);
+export const DashboardListEmptyState = memo(DashboardListEmptyStateComponent);
 
 const _styles = (colors: ThemeDefinitionColors) => {
   return StyleSheet.create({
