@@ -1,26 +1,26 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+
+import { useShallow } from 'zustand/shallow';
 
 import { Coin } from '@/components/coins/types';
-import {
-  DashboardSectionItemRow,
-  DashboardSectionListItem,
-} from '@/components/dashboard-list/dashboard.types';
+import { DashboardSectionItemRow, DashboardSectionListItem } from '@/components/dashboard-list/dashboard.types';
 import coins from '@/data/crypto.json';
-import { getCoinsByCount, getDashboardListSections } from '@/utils';
+import { useCoinStore, useWatchlistStore } from '@/stores';
+import { getDashboardListSections } from '@/utils';
 import { sectionNames } from '@/utils/dashboard-list/getDashboardListSections';
 
 type UseDashboardSectionList = () => DashboardSectionListItem[];
 
+const MAX_DASHBOARD_COIN_COUNT = 5;
 export const useDashboardSectionList: UseDashboardSectionList = () => {
-  //TODO: replace with API CALL
-  const [coinsData] = useState<Coin[]>(coins.data as Coin[]);
-  const popular = useMemo(() => {
-    return getCoinsByCount(coinsData, 5);
-  }, [coinsData]);
+  useEffect(() => {
+    useCoinStore.getState().setCoins(coins.data as Coin[]);
+  }, []);
 
-  const watchlist = useMemo(() => {
-    return getCoinsByCount(coinsData, 5);
-  }, [coinsData]);
+  // TODO: coinsById fine for now. Any coin update changes the object reference. Refactor - Per‑coin subscriptions in rows Or a selector that only pulls watched IDs
+  const coinsById = useCoinStore((s) => s.coinsById);
+  const popular = useCoinStore(useShallow((s) => s.getPopularCoins(MAX_DASHBOARD_COIN_COUNT)));
+  const watchlist = useWatchlistStore(useShallow((s) => s.getWatchedCoins(MAX_DASHBOARD_COIN_COUNT, coinsById)));
 
   return useMemo(() => {
     const list: DashboardSectionListItem[] = [];
@@ -31,17 +31,16 @@ export const useDashboardSectionList: UseDashboardSectionList = () => {
         list.push(section.header);
 
         if (section.hasItems && section.items) {
-          list.push(
-            ...section.items.map(
-              (item) => ({ type: 'ITEM_ROW' as const, data: item }) as DashboardSectionItemRow,
-            ),
-          );
+          list.push(...section.items.map((item) => ({ type: 'ITEM_ROW' as const, data: item }) as DashboardSectionItemRow));
           return;
         }
 
-        if (section.emptyState) {
+        if (!section.hasItems && section.emptyState) {
           list.push(section.emptyState);
+          return;
         }
+
+        return;
       }
     });
 
