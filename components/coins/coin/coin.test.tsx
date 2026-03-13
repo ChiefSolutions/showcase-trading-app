@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '@testing-library/jest-native/extend-expect';
-import { render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 
 import coins from '@/data/crypto.json';
 
@@ -13,7 +13,30 @@ const renderTestCoinListItem = (coin?: Coin) => {
   render(<CoinListItem coin={coin || data[0]} />);
 };
 
+const mockToggle = jest.fn();
+const mockIsWatched = jest.fn();
+
+jest.mock('@/stores/watchlist', () => {
+  return {
+    __esModule: true,
+    useWatchlistStore: jest.fn((selector) =>
+      selector({
+        toggle: mockToggle,
+        isWatched: mockIsWatched,
+      }),
+    ),
+  };
+});
+
 describe('CoinListItem', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+  });
+
   describe('when rendered', () => {
     beforeEach(() => {
       renderTestCoinListItem();
@@ -61,6 +84,24 @@ describe('CoinListItem', () => {
       const priceChangePercentage = screen.getByTestId('coin-price-change-percentage');
 
       expect(priceChangePercentage).toHaveTextContent('▼ 0.93%');
+    });
+  });
+
+  describe('when the watchlist icon is pressed', () => {
+    beforeEach(() => {
+      mockIsWatched.mockReturnValue(true);
+      renderTestCoinListItem();
+    });
+
+    it('should add the coin to watchlist and change the icon', () => {
+      const pressable = screen.getByTestId('watchlist-icon-pressable');
+
+      act(() => {
+        fireEvent.press(pressable);
+      });
+
+      expect(screen.getByTestId('watchlist-icon-selected')).toBeOnTheScreen();
+      expect(mockToggle).toHaveBeenCalledWith(data[0].id);
     });
   });
 });

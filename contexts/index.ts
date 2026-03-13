@@ -1,20 +1,8 @@
-import { FC } from 'react';
+import { ModalContextProvider } from '@/contexts/modal/provider';
 
-import { ThemeProvider } from '@react-navigation/native';
-
-import { useTheme } from '@/theme';
-
-import { withContext } from './with-context';
-
-export const RootWithContexts = (Root: FC) => {
-  const { theme } = useTheme();
-
-  return withContext([
-    {
-      Provider: ThemeProvider,
-      props: {
-        value: theme,
-      },
-    },
-  ])(Root);
-};
+export const ContextProviders = [
+  {
+    Provider: ModalContextProvider,
+    props: {},
+  },
+];

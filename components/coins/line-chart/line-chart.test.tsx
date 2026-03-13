@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import { CoinChartLine } from '@/components/coins/line-chart/index';
 
 jest.mock('react-native-chart-kit', () => ({
-  LineChart: (props: any) => {
+  LineChart: (props: { chartConfig: { color: (value: number) => string }; width: number; bezier: boolean }) => {
     const { View, Text } = jest.requireActual('react-native');
     return (
       <View testID="mock-line-chart">
@@ -16,16 +16,11 @@ jest.mock('react-native-chart-kit', () => ({
   },
 }));
 
-const renderLineChartTestComponent = (
-  isUp = true,
-  chartData = { labels: [], datasets: [{ data: [1, 2] }] },
-) => {
+const renderLineChartTestComponent = (isUp = true, chartData = { labels: [], datasets: [{ data: [1, 2] }] }) => {
   return render(<CoinChartLine isUp={isUp} chartData={chartData} />);
 };
 
 describe('CoinChartLineComponent', () => {
-  // beforeEach(() => jest.clearAllMocks());
-
   describe('when the trend is up', () => {
     it('matches snapshot when trend is up', () => {
       const { toJSON } = renderLineChartTestComponent(true);

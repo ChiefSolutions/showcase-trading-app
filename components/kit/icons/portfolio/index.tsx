@@ -2,7 +2,7 @@ import { FC, memo } from 'react';
 
 import Svg, { Path } from 'react-native-svg';
 
-import { IconProps } from './icons.types';
+import { IconProps } from '../icons.types';
 
 const PortfolioIconComponent: FC<IconProps> = ({ height, width, color = '#1f1f1f' }) => {
   return (

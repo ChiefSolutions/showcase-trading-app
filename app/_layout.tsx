@@ -8,6 +8,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { ContextProviders } from '@/contexts';
+import { withContext } from '@/contexts/with-context';
 import { useTheme } from '@/theme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -39,4 +41,4 @@ export const unstable_settings = {
   initialRouteName: '(tabs)',
 };
 
-export default RootLayout;
+export default withContext(ContextProviders)(RootLayout);

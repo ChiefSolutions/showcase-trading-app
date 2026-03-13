@@ -10,6 +10,7 @@ import { ThemeDefinition, ThemeDefinitionColors, UseThemeResult } from '@/theme/
 export const staticColors = {
   ink: '#111827',
   neutral100: '#E2E8F0',
+  gold: '#ffd700', // #ffd700
 };
 const THEME: ThemeDefinition = {
   light: {

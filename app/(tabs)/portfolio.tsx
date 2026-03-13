@@ -1,130 +1,18 @@
-import { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { Pressable, StyleSheet, View } from 'react-native';
-
-import { BottomSheet, Heading, Text } from '@/components/kit';
-import { TEXT_TYPE } from '@/constants';
-import { useStyles } from '@/theme';
-import { ThemeDefinitionColors } from '@/theme/types';
-import { staticColors } from '@/theme/useTheme';
+import { Balance } from '@/components/balance';
 
 export default function PortfolioScreen() {
-  const styles = useStyles(_styles);
-  const [visible, setVisible] = useState(false);
-
-  const handleShowModal = useCallback(() => {
-    setVisible(true);
-  }, []);
-
-  const handleOnClose = useCallback(() => {
-    setVisible(false);
-  }, []);
   return (
     <View style={styles.container}>
-      <Heading
-        title={'Account Balance'}
-        copy={'Some funds may be reserved for trades or pending withdrawals.'}
-      />
-      <View style={styles.balanceInfo}>
-        <View style={styles.balance}>
-          <Text type={TEXT_TYPE.headingXL}>
-            <Text type={TEXT_TYPE.subHeadingBold}>$</Text>53,450.00
-          </Text>
-          <View style={styles.balanceMoreInfo}>
-            <View>
-              <Text type={TEXT_TYPE.copyBold}>LAST 24H</Text>
-              <Text type={TEXT_TYPE.copyBold}>$0.00</Text>
-            </View>
-            <View style={styles.rateOfReturn}>
-              <Text type={TEXT_TYPE.copyBold}>RATE OF RETURN</Text>
-              <Text type={TEXT_TYPE.copyBold}>0.0%</Text>
-            </View>
-          </View>
-          <View style={styles.buttons}>
-            <Pressable style={styles.pressablePrimary} onPress={handleShowModal}>
-              <Text type={TEXT_TYPE.copyBold} style={styles.depositButtonText}>
-                DEPOSIT
-              </Text>
-            </Pressable>
-            <Pressable style={styles.pressableSecondary}>
-              <Text type={TEXT_TYPE.copyBold} style={styles.withdrawButtonText}>
-                WITHDRAW
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </View>
-
-      <BottomSheet visible={visible} onRequestClose={handleOnClose}>
-        <View>
-          <Heading
-            title={'Account Balance'}
-            copy={'Some funds may be reserved for trades or pending withdrawals.'}
-          />
-        </View>
-      </BottomSheet>
+      <Balance />
     </View>
   );
 }
 
-const _styles = (colors: ThemeDefinitionColors) => {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 16,
-    },
-    content: {
-      flexGrow: 1,
-    },
-    balanceInfo: {
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.onSurface,
-      borderRadius: 16,
-      marginTop: 20,
-      padding: 16,
-    },
-    balance: {},
-    balanceMoreInfo: {
-      display: 'flex',
-      flexDirection: 'row',
-      marginTop: 16,
-      padding: 16,
-      borderTopWidth: 1,
-      borderTopColor: colors.border,
-    },
-    rateOfReturn: {
-      marginLeft: 20,
-    },
-    buttons: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      gap: 16,
-      marginTop: 16,
-    },
-    pressablePrimary: {
-      backgroundColor: '#6366F1', //colors.ink, #6366F1, #06B6D4
-      borderRadius: 8,
-      padding: 16,
-      flexGrow: 1,
-    },
-    pressableSecondary: {
-      backgroundColor: '#E5E7EB', //charcoalMinimal
-      borderRadius: 8,
-      padding: 16,
-      flexGrow: 1,
-    },
-    depositButtonText: {
-      color: staticColors.neutral100,
-      textAlign: 'center',
-    },
-    withdrawButtonText: {
-      textAlign: 'center',
-      color: staticColors.ink,
-    },
-    watchlistContainer: {
-      marginTop: 16,
-    },
-  });
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
