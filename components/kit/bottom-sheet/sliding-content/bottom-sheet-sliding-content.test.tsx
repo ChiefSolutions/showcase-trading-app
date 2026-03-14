@@ -6,7 +6,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-
 import { Gesture, PanGesture } from 'react-native-gesture-handler';
 import * as Reanimated from 'react-native-reanimated';
 
-import { PanGestureMock, mockOnPanGestureEnd, mockOnPanGestureUpdate } from '@/test/test-utils';
+import { PanGestureMock, mockOnPanGestureEnd, mockOnPanGestureUpdate } from '@/__mocks__/test-utils';
 
 import { BottomSheetSlidingContent, MAX_HEIGHT } from './index';
 
@@ -20,9 +20,7 @@ jest.mock('react-native-gesture-handler', () => {
   };
 });
 
-const panSpy = jest
-  .spyOn(Gesture, 'Pan')
-  .mockImplementation(() => PanGestureMock as unknown as PanGesture);
+const panSpy = jest.spyOn(Gesture, 'Pan').mockImplementation(() => PanGestureMock as unknown as PanGesture);
 
 jest.mock('@/utils/shared/getWindowDimensions', () => ({
   getWindowDimensions: () => ({ height: 800 }),
@@ -30,11 +28,7 @@ jest.mock('@/utils/shared/getWindowDimensions', () => ({
 
 const renderTestComponent = async (visible = false, isFullScreen = false) => {
   const renderResult = render(
-    <BottomSheetSlidingContent
-      onRequestClose={mockHandleDismiss}
-      visible={visible}
-      isFullScreen={isFullScreen}
-    >
+    <BottomSheetSlidingContent onRequestClose={mockHandleDismiss} visible={visible} isFullScreen={isFullScreen}>
       <View testID="test-sliding-content-container">
         <Text>Test Modal Content</Text>
       </View>
@@ -143,10 +137,7 @@ describe('BottomSheetSlidingContent', () => {
         });
       });
 
-      expect(Reanimated.withTiming).toHaveBeenCalledWith(
-        0,
-        expect.objectContaining({ duration: 350, easing: expect.any(Function) }),
-      );
+      expect(Reanimated.withTiming).toHaveBeenCalledWith(0, expect.objectContaining({ duration: 350, easing: expect.any(Function) }));
     });
   });
 });

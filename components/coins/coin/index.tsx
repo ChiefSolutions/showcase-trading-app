@@ -6,9 +6,8 @@ import * as Icons from '@/components/kit/icons';
 import { Text } from '@/components/kit/text';
 import { TEXT_TYPE } from '@/constants';
 import { useWatchlistStore } from '@/stores';
-import { useStyles } from '@/theme';
+import { staticColors, useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
-import { staticColors } from '@/theme/useTheme';
 import { formatCurrency, formatLineChartData, getPriceChangePercentIndicator, getPriceChangePercentage } from '@/utils';
 
 import { CoinChartLine } from '../line-chart';

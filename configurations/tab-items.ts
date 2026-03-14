@@ -1,4 +1,4 @@
-import { DashboardTab, PortfolioTab } from '@/components/kit';
+import { DashboardTabIcon, PortfolioTabIcon } from '@/components/kit';
 
 export const tabItems = [
   {
@@ -6,7 +6,7 @@ export const tabItems = [
     name: 'index',
     options: {
       title: 'Dashboard',
-      tabBarIcon: DashboardTab,
+      tabBarIcon: DashboardTabIcon,
     },
   },
   {
@@ -14,7 +14,7 @@ export const tabItems = [
     name: 'portfolio',
     options: {
       title: 'Portfolio',
-      tabBarIcon: PortfolioTab,
+      tabBarIcon: PortfolioTabIcon,
     },
   },
 ];

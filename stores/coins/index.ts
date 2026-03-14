@@ -2,17 +2,17 @@ import { create } from 'zustand';
 
 import { Coin } from '@/components/coins/types';
 
-interface CoinState {
+interface CoinsState {
   coinsById: Record<string, Coin>;
   allIds: string[];
   getCoin: (id: string) => Coin | undefined;
   getPopularCoins: (count: number) => Coin[];
-  setCoins: (markets: Coin[]) => void;
+  setCoins: (coins: Coin[]) => void;
   upsertCoin: (coin: Coin) => void;
   clear: () => void;
 }
 
-export const useCoinStore = create<CoinState>((set, get) => ({
+export const useCoinStore = create<CoinsState>((set, get) => ({
   coinsById: {},
   allIds: [],
 

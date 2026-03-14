@@ -6,7 +6,5 @@ export interface IconProps {
 }
 
 export interface TabIconProps {
-  focused: boolean;
   color: string;
-  size: number;
 }
