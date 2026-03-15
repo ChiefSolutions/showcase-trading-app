@@ -1,1 +1,2 @@
-export { getWindowDimensions } from './getWindowDimensions';
+export { getExpoOS } from '@/utils/shared/os';
+export { getWindowDimensions } from './get-window-dimensions';

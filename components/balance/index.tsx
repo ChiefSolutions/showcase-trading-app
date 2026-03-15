@@ -4,8 +4,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Heading, Text } from '@/components/kit';
 import { TEXT_TYPE } from '@/constants';
+import { staticColors, useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
-import { staticColors, useStyles } from '@/theme/useTheme';
 
 export const Balance: FC = () => {
   const styles = useStyles(_styles);

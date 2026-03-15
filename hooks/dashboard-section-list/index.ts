@@ -3,11 +3,11 @@ import { useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 import { Coin } from '@/components/coins/types';
-import { DashboardSectionItemRow, DashboardSectionListItem } from '@/components/dashboard-list/dashboard.types';
+import { DashboardSectionDataMap, DashboardSectionItemRow, DashboardSectionListItem } from '@/components/dashboard-list/dashboard.types';
+import { dashboardListSections } from '@/configurations/dashboard-list-sections';
+import { dashboardSectionNames } from '@/constants/dashboard-list';
 import coins from '@/data/crypto.json';
 import { useCoinStore, useWatchlistStore } from '@/stores';
-import { getDashboardListSections } from '@/utils';
-import { sectionNames } from '@/utils/dashboard-list/getDashboardListSections';
 
 type UseDashboardSectionList = () => DashboardSectionListItem[];
 
@@ -24,13 +24,20 @@ export const useDashboardSectionList: UseDashboardSectionList = () => {
 
   return useMemo(() => {
     const list: DashboardSectionListItem[] = [];
-    const sections = getDashboardListSections(popular, watchlist);
+    const dataMap: DashboardSectionDataMap = {
+      popular,
+      watchlist,
+    };
 
-    sections.forEach((section) => {
-      if (sectionNames.includes(section.name)) {
+    dashboardListSections.forEach((section) => {
+      if (dashboardSectionNames.includes(section.name)) {
+        const data = dataMap[section.name as keyof typeof dataMap];
+
         list.push(section.header);
+        section.hasItems = !!data.length;
+        section.items = data;
 
-        if (section.hasItems && section.items) {
+        if (section.hasItems) {
           list.push(...section.items.map((item) => ({ type: 'ITEM_ROW' as const, data: item }) as DashboardSectionItemRow));
           return;
         }

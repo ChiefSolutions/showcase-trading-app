@@ -5,20 +5,18 @@ import { Pressable, Text, View } from 'react-native';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Gesture, PanGesture } from 'react-native-gesture-handler';
 
+import { PanGestureMock, mockOnTapGestureEnd } from '@/__mocks__/test-utils';
 import { BottomSheet } from '@/components/kit';
-import { PanGestureMock, mockOnTapGestureEnd } from '@/test/test-utils';
 
-const panSpy = jest
-  .spyOn(Gesture, 'Pan')
-  .mockImplementation(() => PanGestureMock as unknown as PanGesture);
+const panSpy = jest.spyOn(Gesture, 'Pan').mockImplementation(() => PanGestureMock as unknown as PanGesture);
 
-jest.mock('react', () => {
-  const actual = jest.requireActual('react');
-
-  return {
-    ...actual,
-  };
-});
+// jest.mock('react', () => {
+//   const actual = jest.requireActual('react');
+//
+//   return {
+//     ...actual,
+//   };
+// });
 
 jest.mock('react-native-gesture-handler', () => {
   const original = jest.requireActual('react-native-gesture-handler');
