@@ -7,14 +7,18 @@ import { ListRenderItemInfo } from '@shopify/flash-list/src/FlashListProps';
 import { Coin } from '@/components/coins/types';
 import { HeadingProps } from '@/components/kit/heading';
 import { DASHBOARD_SECTION_TYPE } from '@/constants';
+import { dashboardSectionNames } from '@/constants/dashboard-list';
 
-export type DashboardSectionType =
-  (typeof DASHBOARD_SECTION_TYPE)[keyof typeof DASHBOARD_SECTION_TYPE];
+export type DashboardSectionType = (typeof DASHBOARD_SECTION_TYPE)[keyof typeof DASHBOARD_SECTION_TYPE];
 export type DashboardSectionItemRow = { type: DashboardSectionType; data: Coin };
 
-export type RenderDashboardListItem = (
-  info: ListRenderItemInfo<DashboardSectionListItem>,
-) => JSX.Element | null;
+export type RenderDashboardListItem = (info: ListRenderItemInfo<DashboardSectionListItem>) => JSX.Element | null;
+
+export type DashboardSectionName = (typeof dashboardSectionNames)[number];
+
+export type DashboardSectionDataMap = {
+  [K in DashboardSectionName]: Coin[];
+};
 
 export interface DashboardSectionHeader extends HeadingProps {
   type: DashboardSectionType;

@@ -1,4 +1,4 @@
-export { DASHBOARD_SECTION_TYPE } from './home';
+export { DASHBOARD_SECTION_TYPE } from './dashboard-list';
 export { LINE_CHART_COLORS } from './line-chart';
 export * from './bottom-sheet';
 

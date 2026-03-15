@@ -22,7 +22,7 @@ jest.mock('react-native-gesture-handler', () => {
 
 const panSpy = jest.spyOn(Gesture, 'Pan').mockImplementation(() => PanGestureMock as unknown as PanGesture);
 
-jest.mock('@/utils/shared/getWindowDimensions', () => ({
+jest.mock('@/utils/shared/get-window-dimensions', () => ({
   getWindowDimensions: () => ({ height: 800 }),
 }));
 
