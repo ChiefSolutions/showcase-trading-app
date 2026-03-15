@@ -1,8 +1,8 @@
 import { act, renderHook } from '@testing-library/react-native';
 
+import { resetStores } from '@/__mocks__/test-utils';
 import { useDashboardSectionList } from '@/hooks';
 import { useWatchlistStore } from '@/stores';
-import { resetStores } from '@/test/test-utils';
 
 describe('useDashboardSectionList', () => {
   beforeEach(() => resetStores());

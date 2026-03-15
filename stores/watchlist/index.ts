@@ -7,7 +7,7 @@ type WatchlistState = {
   isWatched: (id: string) => boolean;
   add: (id: string) => void;
   getWatchedIds: () => string[];
-  getWatchedCoins: (count: number, marketsById: Record<string, Coin>) => Coin[];
+  getWatchedCoins: (count: number, coinsById: Record<string, Coin>) => Coin[];
   remove: (id: string) => void;
   toggle: (id: string) => void;
   clear: () => void;
@@ -20,26 +20,36 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
 
   add: (id) =>
     set((state) => {
-      if (state.watched.has(id)) return state;
+      if (state.watched.has(id)) {
+        return state;
+      }
+
       const next = new Set(state.watched);
+
       next.add(id);
+
       return { watched: next };
     }),
 
   getWatchedIds: () => Array.from(get().watched),
 
-  getWatchedCoins: (count, marketsById) => {
+  getWatchedCoins: (count, coinsById) => {
     return Array.from(get().watched)
       .slice(0, count)
-      .map((id) => marketsById[id])
+      .map((id) => coinsById[id])
       .filter(Boolean);
   },
 
   remove: (id) =>
     set((state) => {
-      if (!state.watched.has(id)) return state;
+      if (!state.watched.has(id)) {
+        return state;
+      }
+
       const next = new Set(state.watched);
+
       next.delete(id);
+
       return { watched: next };
     }),
 
