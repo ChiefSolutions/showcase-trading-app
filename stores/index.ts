@@ -1,2 +1,2 @@
-export { useCoinStore } from '@/stores/coins';
+export { useMarketsStore } from './markets';
 export { useWatchlistStore } from './watchlist';

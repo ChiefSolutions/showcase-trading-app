@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { CoinChartLine } from '@/components/coins/line-chart/index';
+import { ChartLine } from '@/components/kit/line-chart/index';
 
 jest.mock('react-native-chart-kit', () => ({
   LineChart: (props: { chartConfig: { color: (value: number) => string }; width: number; bezier: boolean }) => {
@@ -17,7 +17,7 @@ jest.mock('react-native-chart-kit', () => ({
 }));
 
 const renderLineChartTestComponent = (isUp = true, chartData = { labels: [], datasets: [{ data: [1, 2] }] }) => {
-  return render(<CoinChartLine isUp={isUp} chartData={chartData} />);
+  return render(<ChartLine isUp={isUp} chartData={chartData} />);
 };
 
 describe('CoinChartLineComponent', () => {

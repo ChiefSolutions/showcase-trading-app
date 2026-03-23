@@ -1,42 +1,30 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
+import { FC, memo, useCallback } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
 
-import { CoinListItem } from '@/components/coins/coin';
-import { Coin } from '@/components/coins/types';
 import { Heading } from '@/components/kit';
-import coins from '@/data/crypto.json';
+import { MarketListItem } from '@/components/markets/list-tem';
+import { Market } from '@/components/markets/markets.types';
 import { useStyles } from '@/theme';
-import { getCoinsByCount } from '@/utils';
 
 const WatchListComponent: FC = () => {
-  // TODO: replace with API Call
-  const [data] = useState<Coin[]>(coins.data as Coin[]);
   const styles = useStyles(_styles);
 
-  const list = useMemo(() => {
-    return getCoinsByCount(data, 5);
-  }, [data]);
-
-  const keyExtractor = (item: Coin) => item.id;
-  const renderCoinItem = useCallback(({ item }: { item: Coin }) => {
-    return <CoinListItem coin={item} />;
+  const keyExtractor = (item: Market) => item.id;
+  const renderCoinItem = useCallback(({ item }: { item: Market }) => {
+    return <MarketListItem market={item} />;
   }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.headingContainer}>
-        <Heading
-          testID="watchlist-heading"
-          title={'My Watchlist'}
-          copy={'Coins that have been added to your watchlist.'}
-        />
+        <Heading testID="watchlist-heading" title={'My Watchlist'} copy={'Markets that have been added to your watchlist.'} />
       </View>
       <FlashList
         testID={'watchlist-flash-list'}
-        data={list}
+        data={[]}
         showsVerticalScrollIndicator={false}
         keyExtractor={keyExtractor}
         renderItem={renderCoinItem}

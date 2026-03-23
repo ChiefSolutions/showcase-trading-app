@@ -7,7 +7,7 @@ export const dashboardListSections: DashboardSection[] = [
     header: {
       type: DASHBOARD_SECTION_TYPE.SECTION_HEADER,
       title: 'Most Popular',
-      copy: 'The most popular coins sorted by market cap rank.',
+      copy: 'The most popular markets.',
     },
     hasItems: false,
     items: [],
@@ -21,7 +21,7 @@ export const dashboardListSections: DashboardSection[] = [
     header: {
       type: DASHBOARD_SECTION_TYPE.SECTION_HEADER,
       title: 'My Watchlist',
-      copy: 'Coins that have been added to your watchlist.',
+      copy: 'Markets that have been added to your watchlist.',
       style: {
         marginTop: 20,
       },

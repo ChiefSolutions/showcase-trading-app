@@ -4,8 +4,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
 
-import { CoinListItem } from '@/components/coins/coin';
 import { AnimatedLogo } from '@/components/kit';
+import { MarketListItem } from '@/components/markets/list-tem';
 import { DASHBOARD_SECTION_TYPE } from '@/constants';
 import { useDashboardSectionList } from '@/hooks';
 import { dashboardListKeyExtractor } from '@/utils';
@@ -17,6 +17,12 @@ import { DashboardListSectionHeader } from './header';
 export const DashboardList = () => {
   const data = useDashboardSectionList();
 
+  // useEffect(() => {
+  //   (async () => {
+  //     await fetchPopularMarkets();
+  //   })();
+  // }, [fetchPopularMarkets]);
+
   const renderItem: RenderDashboardListItem = useCallback(({ item }) => {
     const { type } = item;
 
@@ -24,7 +30,8 @@ export const DashboardList = () => {
       case DASHBOARD_SECTION_TYPE.SECTION_HEADER:
         return <DashboardListSectionHeader {...item} />;
       case DASHBOARD_SECTION_TYPE.ITEM_ROW:
-        return item.data ? <CoinListItem key={item.data.id} coin={item.data} /> : null;
+        return item.data ? <MarketListItem key={item.data.id} market={item.data} /> : null;
+      // return item.data ? <CoinListItem key={item.data.id} coin={item.data} /> : null;
       case DASHBOARD_SECTION_TYPE.EMPTY_STATE:
         return <DashboardListEmptyState message={item.message ?? ''} />;
       default:

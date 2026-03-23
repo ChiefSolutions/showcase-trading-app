@@ -1,12 +1,5 @@
-import { Coin, FormatLineChartData } from '@/components/coins/types';
 import { BASE_PRECISION } from '@/constants';
-
-
-
-
-
-
-
+import { FormatLineChartData } from '@/utils/market/market-utils.types';
 
 export const getPriceChangePercentage = (value: number) => {
   return `${Math.abs(value).toFixed(BASE_PRECISION)}%`;
@@ -17,16 +10,12 @@ export const getPriceChangePercentIndicator = (value: number) => {
 };
 
 export const formatLineChartData: FormatLineChartData = (sparkline, isUp) => ({
-  labels: [], // empty for mini charts
+  labels: [],
   datasets: [
     {
-      data: sparkline.price,
+      data: sparkline,
       color: (opacity = 1) => (isUp ? `rgba(0,255,128,${opacity})` : `rgba(255,50,50,${opacity})`),
       strokeWidth: 2,
     },
   ],
 });
-
-export const getCoinsByCount = (coins: Coin[], count: number) => {
-  return coins.slice(0, count);
-};

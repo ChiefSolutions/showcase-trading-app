@@ -7,4 +7,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|expo.*|@expo.*|@shopify/flash-list|recyclerlistview|@react-navigation.*|@react-native-community.*|react-native-chart-kit|react-native-svg|react-native-reanimated|react-native-worklets|react-native-gesture-handler)/)',
   ],
+  moduleNameMapper: {
+    '\\.svg$': '<rootDir>/__mocks__/svg-mock.tsx',
+  },
 };

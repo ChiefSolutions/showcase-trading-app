@@ -1,9 +1,7 @@
+import { mockMarketsData } from '@/__mocks__/market-data';
 import { resetStores } from '@/__mocks__/test-utils';
-import { Coin } from '@/components/coins/types';
-import response from '@/data/crypto.json';
-import { useCoinStore, useWatchlistStore } from '@/stores';
-
-const coins = response.data.slice(0, 5) as Coin[];
+import { Market } from '@/components/markets/markets.types';
+import { useMarketsStore, useWatchlistStore } from '@/stores';
 
 describe('useWatchlistStore', () => {
   afterEach(() => {
@@ -19,7 +17,7 @@ describe('useWatchlistStore', () => {
         isWatched: expect.any(Function),
         add: expect.any(Function),
         getWatchedIds: expect.any(Function),
-        getWatchedCoins: expect.any(Function),
+        getWatchedMarkets: expect.any(Function),
         remove: expect.any(Function),
         toggle: expect.any(Function),
         clear: expect.any(Function),
@@ -34,7 +32,7 @@ describe('useWatchlistStore', () => {
       state.add('bitcoin');
     });
 
-    it('should add the coin to watchlist', () => {
+    it('should add the market to watchlist', () => {
       const updatedState = useWatchlistStore.getState();
 
       expect(updatedState.watched.has('bitcoin')).toBe(true);
@@ -43,14 +41,14 @@ describe('useWatchlistStore', () => {
       expect(updatedState.getWatchedIds().includes('bitcoin')).toBe(true);
     });
 
-    describe('when adding the same coin id more than once', () => {
+    describe('when adding the same market id more than once', () => {
       beforeEach(() => {
         const state = useWatchlistStore.getState();
 
         state.add('bitcoin');
       });
 
-      it('should not add the coin to watchlist', () => {
+      it('should not add the market to watchlist', () => {
         const updatedState = useWatchlistStore.getState();
         expect(updatedState.getWatchedIds().length).toBe(1);
       });
@@ -61,20 +59,19 @@ describe('useWatchlistStore', () => {
     const state = useWatchlistStore.getState();
 
     beforeEach(() => {
-      useCoinStore.getState().setCoins(coins);
+      useMarketsStore.getState().setMarkets(mockMarketsData.slice(0, 3) as Market[]);
 
-      state.add('bitcoin');
-      state.add('ethereum');
-      state.add('tether');
-      state.add('ripple');
+      state.add('1002e6ef-808f-450a-bd5b-15067c9a6814');
+      state.add('36e69848-85e0-43b9-bfc1-101e747f412e');
+      state.add('b2404ab1-ef5e-4de3-bb59-758b42df0e14');
     });
 
     it('should return the specified count for watched coins', () => {
       const updatedState = useWatchlistStore.getState();
-      const coinsState = useCoinStore.getState();
+      const coinsState = useMarketsStore.getState();
 
-      expect(updatedState.watched.size).toEqual(4);
-      expect(updatedState.getWatchedCoins(2, coinsState.coinsById).length).toEqual(2);
+      expect(updatedState.watched.size).toEqual(3);
+      expect(updatedState.getWatchedMarkets(2, coinsState.marketsById).length).toEqual(2);
     });
 
     describe('when removing', () => {
@@ -82,7 +79,7 @@ describe('useWatchlistStore', () => {
         state.remove('ripple');
       });
 
-      it('should remove the coin from watched', () => {
+      it('should remove the market from watched', () => {
         const updatedState = useWatchlistStore.getState();
 
         expect(updatedState.watched.size).toEqual(3);
@@ -98,8 +95,8 @@ describe('useWatchlistStore', () => {
       it('should return existing state', () => {
         const updatedState = useWatchlistStore.getState();
 
-        expect(updatedState.watched.size).toEqual(4);
-        expect(updatedState.getWatchedIds().length).toEqual(4);
+        expect(updatedState.watched.size).toEqual(3);
+        expect(updatedState.getWatchedIds().length).toEqual(3);
       });
     });
   });

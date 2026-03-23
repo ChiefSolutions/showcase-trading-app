@@ -1,26 +1,29 @@
 import { useEffect, useMemo } from 'react';
 
-import { useShallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/react/shallow';
 
-import { Coin } from '@/components/coins/types';
 import { DashboardSectionDataMap, DashboardSectionItemRow, DashboardSectionListItem } from '@/components/dashboard-list/dashboard.types';
 import { dashboardListSections } from '@/configurations/dashboard-list-sections';
 import { dashboardSectionNames } from '@/constants/dashboard-list';
-import coins from '@/data/crypto.json';
-import { useCoinStore, useWatchlistStore } from '@/stores';
+import { useMarketsStore, useWatchlistStore } from '@/stores';
 
 type UseDashboardSectionList = () => DashboardSectionListItem[];
 
 const MAX_DASHBOARD_COIN_COUNT = 5;
 export const useDashboardSectionList: UseDashboardSectionList = () => {
+  const { loading, error, fetchPopularMarkets } = useMarketsStore();
+
   useEffect(() => {
-    useCoinStore.getState().setCoins(coins.data as Coin[]);
-  }, []);
+    (async () => {
+      await fetchPopularMarkets();
+    })();
+  }, [fetchPopularMarkets]);
 
   // TODO: coinsById fine for now. Any coin update changes the object reference. Refactor - Per‑coin subscriptions in rows Or a selector that only pulls watched IDs
-  const coinsById = useCoinStore((s) => s.coinsById);
-  const popular = useCoinStore(useShallow((s) => s.getPopularCoins(MAX_DASHBOARD_COIN_COUNT)));
-  const watchlist = useWatchlistStore(useShallow((s) => s.getWatchedCoins(MAX_DASHBOARD_COIN_COUNT, coinsById)));
+  const marketsById = useMarketsStore(useShallow((s) => s.marketsById));
+
+  const popular = useMarketsStore(useShallow((s) => s.popular));
+  const watchlist = useWatchlistStore(useShallow((s) => s.getWatchedMarkets(MAX_DASHBOARD_COIN_COUNT, marketsById)));
 
   return useMemo(() => {
     const list: DashboardSectionListItem[] = [];

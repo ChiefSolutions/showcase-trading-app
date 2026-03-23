@@ -7,20 +7,17 @@ import { LineChart } from 'react-native-chart-kit';
 import { LINE_CHART_COLORS } from '@/constants';
 import { LineChartData } from '@/types';
 
-interface CoinChartLineComponentProps {
+interface ChartLineComponentProps {
   chartData: LineChartData;
   isUp: boolean;
 }
 
-const CoinChartLineComponent: FC<CoinChartLineComponentProps> = ({ chartData, isUp }) => {
+const ChartLineComponent: FC<ChartLineComponentProps> = ({ chartData, isUp }) => {
   const chartConfig = useMemo(() => {
     return {
       backgroundGradientFromOpacity: 0,
       backgroundGradientToOpacity: 0,
-      color: (opacity = 1) =>
-        isUp
-          ? `rgba(${LINE_CHART_COLORS.isUp},${opacity})`
-          : `rgba(${LINE_CHART_COLORS.isDown},${opacity})`,
+      color: (opacity = 1) => (isUp ? `rgba(${LINE_CHART_COLORS.isUp},${opacity})` : `rgba(${LINE_CHART_COLORS.isDown},${opacity})`),
     };
   }, [isUp]);
 
@@ -42,7 +39,7 @@ const CoinChartLineComponent: FC<CoinChartLineComponentProps> = ({ chartData, is
   );
 };
 
-export const CoinChartLine = memo(CoinChartLineComponent);
+export const ChartLine = memo(ChartLineComponent);
 
 const styles = StyleSheet.create({
   chartStyle: {
