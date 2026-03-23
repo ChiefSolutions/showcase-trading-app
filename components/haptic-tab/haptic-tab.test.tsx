@@ -13,13 +13,6 @@ jest.mock('expo-haptics', () => ({
   },
 }));
 
-jest.mock('@/utils/shared/os', () => {
-  return {
-    __esModule: true,
-    getExpoOS: jest.fn(),
-  };
-});
-
 const onPressIn = jest.fn();
 
 const renderTestComponent = () => {

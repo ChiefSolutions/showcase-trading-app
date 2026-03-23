@@ -1,31 +1,26 @@
 import { FC, memo, useCallback } from 'react';
 
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/kit';
 import * as Icons from '@/components/kit/icons';
-import { Text } from '@/components/kit/text';
+import { ChartLine } from '@/components/kit/line-chart';
+import { IconName, SvgIcon } from '@/components/kit/svg-icon';
 import { TEXT_TYPE } from '@/constants';
 import { useWatchlistStore } from '@/stores';
 import { staticColors, useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 import { formatCurrency, formatLineChartData, getPriceChangePercentIndicator, getPriceChangePercentage } from '@/utils';
 
-import { CoinChartLine } from '../line-chart';
-import { Coin } from '../types';
+import { MarketListItemProps } from '../markets.types';
 
-interface CoinListItemProps {
-  coin: Coin;
-}
-
-const COIN_ATTRIBUTE_CLEARANCE = 3;
-const CoinListItemComponent: FC<CoinListItemProps> = ({ coin }) => {
+const ATTRIBUTE_CLEARANCE = 3;
+const MarketListItemComponent: FC<MarketListItemProps> = ({ market }) => {
   const styles = useStyles(_styles);
-  const isUp = coin.price_change_percentage_24h >= 0;
-  const chartData = formatLineChartData(coin.sparkline_in_7d, isUp);
-  const isWatched = useWatchlistStore((s) => s.isWatched(coin.id));
-  const toggle = useWatchlistStore((s) => {
-    return s.toggle;
-  });
+  const isWatched = useWatchlistStore((s) => s.isWatched(market.id));
+  const toggle = useWatchlistStore((s) => s.toggle);
+  const isUp = market.price_change_percentage_24h >= 0;
+  const chartData = formatLineChartData(market.sparkline_7d, isUp);
 
   const pressableStyles = useCallback(
     ({ pressed }: { pressed: boolean }) => {
@@ -44,42 +39,42 @@ const CoinListItemComponent: FC<CoinListItemProps> = ({ coin }) => {
   }, []);
 
   const handleToggleWatchlist = useCallback(() => {
-    toggle(coin.id);
-  }, [coin.id, toggle]);
+    toggle(market.id);
+  }, [market.id, toggle]);
 
   return (
-    <Pressable testID="coin-pressable" style={pressableStyles}>
+    <Pressable testID="market-pressable" style={pressableStyles}>
       <View style={styles.leftContainer}>
-        <Image testID="coin-image" source={{ uri: coin.image }} style={styles.coinImage} />
-        <View style={styles.coinNameAndSymbol}>
-          <Text testID="coin-name" type={TEXT_TYPE.copy} style={styles.coinName}>
-            {coin.name}
+        <SvgIcon name={market.short_name as IconName} />
+        <View style={styles.symbolAndName}>
+          <Text testID="market-name" type={TEXT_TYPE.copy} style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {market.short_name}
           </Text>
-          <Text testID="coin-symbol" type={TEXT_TYPE.copy} style={styles.coinSymbol}>
-            {coin.symbol}
+          <Text testID="market-symbol" type={TEXT_TYPE.copy} style={styles.symbol}>
+            {market.symbol}
           </Text>
         </View>
       </View>
-      <View testID="coin-line-chart" style={styles.middleContainer}>
-        <CoinChartLine chartData={chartData} isUp={isUp} />
+      <View testID="market-line-chart" style={styles.middleContainer}>
+        <ChartLine chartData={chartData} isUp={isUp} />
       </View>
       <View>
-        <Text testID="coin-current-price" type={TEXT_TYPE.copy} style={{ textAlign: 'right' }}>
-          {formatCurrency(coin.current_price)}
+        <Text testID="market-current-price" type={TEXT_TYPE.copy} style={{ textAlign: 'right' }}>
+          {formatCurrency(market.current_price)}
         </Text>
-        <Text type={TEXT_TYPE.copy} style={styles.priceChangePercentage} testID="coin-price-change-percentage">
+        <Text type={TEXT_TYPE.copy} style={styles.priceChangePercentage} testID="market-price-change-percentage">
           <Text
-            testID="coin-price-change-arrow"
+            testID="market-price-change-arrow"
             type={TEXT_TYPE.copy}
-            style={getPriceChangeIndicatorStyles(coin.price_change_percentage_24h)}
+            style={getPriceChangeIndicatorStyles(market.price_change_percentage_24h)}
           >
-            {getPriceChangePercentIndicator(coin.price_change_percentage_24h)}
+            {getPriceChangePercentIndicator(market.price_change_percentage_24h)}
           </Text>
 
-          {getPriceChangePercentage(coin.price_change_percentage_24h)}
+          {getPriceChangePercentage(market.price_change_percentage_24h)}
         </Text>
       </View>
-      <View style={{ marginLeft: 14 }}>
+      <View style={{ marginLeft: 8 }}>
         <Pressable testID="watchlist-icon-pressable" onPress={handleToggleWatchlist}>
           {!isWatched && <Icons.StarIcon testID="watchlist-icon" height={30} width={30} color={styles.watchlistIcon.color} />}
           {isWatched && <Icons.StarIconFilled testID="watchlist-icon-selected" height={30} width={30} color={staticColors.gold} />}
@@ -89,7 +84,7 @@ const CoinListItemComponent: FC<CoinListItemProps> = ({ coin }) => {
   );
 };
 
-export const CoinListItem = memo(CoinListItemComponent);
+export const MarketListItem = memo(MarketListItemComponent);
 const _styles = (colors: ThemeDefinitionColors) => {
   return StyleSheet.create({
     pressable: {
@@ -116,23 +111,26 @@ const _styles = (colors: ThemeDefinitionColors) => {
       width: 30,
       height: 30,
     },
-    coinNameAndSymbol: {
+    symbolAndName: {
       flexDirection: 'column',
-      left: 16,
+      left: 8,
+      width: 70,
     },
     middleContainer: {
       flex: 1,
+      marginHorizontal: 8,
     },
-    coinName: {
+    name: {
       fontWeight: 'bold',
     },
-    coinSymbol: {
+    symbol: {
       color: colors.secondary,
-      marginTop: COIN_ATTRIBUTE_CLEARANCE,
+      marginTop: ATTRIBUTE_CLEARANCE,
+      fontSize: 10,
     },
     priceChangePercentage: {
       textAlign: 'right',
-      marginTop: COIN_ATTRIBUTE_CLEARANCE,
+      marginTop: ATTRIBUTE_CLEARANCE,
     },
     watchlistIcon: {
       color: colors.subtle,

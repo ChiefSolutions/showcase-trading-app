@@ -1,5 +1,7 @@
 export { DASHBOARD_SECTION_TYPE } from './dashboard-list';
 export { LINE_CHART_COLORS } from './line-chart';
+export { MARKET_TREND } from './markets';
+export { SVG_ICON_NAME_TEMPLATE } from './svg-icon-name';
 export * from './bottom-sheet';
 
 export const TEXT_TYPE = {

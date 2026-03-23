@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="106" viewBox="0 0 100 106">
+    <defs>
+        <path id="us-star" fill="white" d="M0,-25 L5.88,-8.09 L23.78,-7.73 L9.51,3.09 L14.69,20.23 L0,10 L-14.69,20.23 L-9.51,3.09 L-23.78,-7.73 L-5.88,-8.09 Z" />
+
+        <clipPath id="c-us">
+            <circle cx="36" cy="36" r="31" />
+        </clipPath>
+
+        <clipPath id="c-jp">
+            <circle cx="64" cy="64" r="31" />
+        </clipPath>
+
+        <filter id="sh" x="-30%" y="-30%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#000" flood-opacity="0.28" />
+        </filter>
+    </defs>
+
+    <!-- ── US FLAG (top-left) ── -->
+    <circle cx="36" cy="36" r="32" fill="white" filter="url(#sh)" />
+
+    <g clip-path="url(#c-us)">
+        <g transform="translate(36,36) scale(0.1292) translate(-320,-240)">
+            <path fill="#bd3d44" d="M0 0h640v480H0" />
+            <path stroke="#fff" stroke-width="37" d="M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640" />
+            <path fill="#192f5d" d="M0 0h364.8v258.5H0" />
+
+            <use xlink:href="#us-star" transform="translate(61,44)" />
+            <use xlink:href="#us-star" transform="translate(183,44)" />
+            <use xlink:href="#us-star" transform="translate(305,44)" />
+
+            <use xlink:href="#us-star" transform="translate(61,130)" />
+            <use xlink:href="#us-star" transform="translate(183,130)" />
+            <use xlink:href="#us-star" transform="translate(305,130)" />
+
+            <use xlink:href="#us-star" transform="translate(61,216)" />
+            <use xlink:href="#us-star" transform="translate(183,216)" />
+            <use xlink:href="#us-star" transform="translate(305,216)" />
+        </g>
+    </g>
+
+    <circle cx="36" cy="36" r="31" fill="none" stroke="white" stroke-width="2" />
+
+    <!-- ── JAPAN FLAG (bottom-right) ── -->
+    <circle cx="64" cy="64" r="32" fill="white" filter="url(#sh)" />
+
+    <g clip-path="url(#c-jp)">
+        <g transform="translate(64,64) scale(0.1292) translate(-320,-240)">
+            <rect x="0" y="0" width="640" height="480" fill="white" />
+            <circle cx="320" cy="240" r="144" fill="#bc002d" />
+        </g>
+    </g>
+
+    <circle cx="64" cy="64" r="31" fill="none" stroke="white" stroke-width="2" />
+</svg>

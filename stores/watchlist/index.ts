@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
-import { Coin } from '@/components/coins/types';
+import { Market } from '@/components/markets/markets.types';
 
 type WatchlistState = {
   watched: Set<string>;
   isWatched: (id: string) => boolean;
   add: (id: string) => void;
   getWatchedIds: () => string[];
-  getWatchedCoins: (count: number, coinsById: Record<string, Coin>) => Coin[];
+  getWatchedMarkets: (count: number, marketsById: Record<string, Market>) => Market[];
   remove: (id: string) => void;
   toggle: (id: string) => void;
   clear: () => void;
@@ -33,10 +33,10 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
 
   getWatchedIds: () => Array.from(get().watched),
 
-  getWatchedCoins: (count, coinsById) => {
+  getWatchedMarkets: (count, marketsById) => {
     return Array.from(get().watched)
       .slice(0, count)
-      .map((id) => coinsById[id])
+      .map((id) => marketsById[id])
       .filter(Boolean);
   },
 

@@ -1,12 +1,20 @@
-import { HapticTab } from '@/components/haptic-tab';
+import { JSX } from 'react';
+
+import { BottomTabBarButtonProps, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+
 import { ThemeDefinitionColors } from '@/theme/types';
 
-export const getTabsScreenOptions = (colors: ThemeDefinitionColors) => {
+type GetTabsScreenOptions = (
+  colors: ThemeDefinitionColors,
+  tabBarButton: (props: BottomTabBarButtonProps) => JSX.Element,
+) => BottomTabNavigationOptions;
+
+export const getTabsScreenOptions: GetTabsScreenOptions = (colors, tabBarButton) => {
   return {
     tabBarActiveTintColor: colors.emphasis,
     tabBarInactiveTintColor: colors.subtle,
     headerShown: true,
-    tabBarButton: HapticTab,
+    tabBarButton,
     tabBarStyle: {
       height: 60,
       paddingTop: 5,

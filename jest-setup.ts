@@ -25,3 +25,23 @@ jest.mock('react-native-worklets', () => ({
   ...jest.requireActual('react-native-worklets'),
   scheduleOnRN: (cb: () => void) => cb(),
 }));
+
+jest.mock('@/utils/shared/os', () => {
+  return {
+    __esModule: true,
+    getExpoOS: jest.fn(),
+  };
+});
+
+jest.mock('@/utils/shared/env-config', () => {
+  return {
+    __esModule: true,
+    getEnvVarConfig: jest.fn().mockReturnValue({
+      apiUrl: 'https://tradingapp.com/api/',
+      isProduction: false,
+      version: '0.1.0',
+    }),
+  };
+});
+
+global.fetch = jest.fn();

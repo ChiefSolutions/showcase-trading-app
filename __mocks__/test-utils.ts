@@ -1,4 +1,4 @@
-import { useCoinStore, useWatchlistStore } from '@/stores';
+import { useMarketsStore, useWatchlistStore } from '@/stores';
 
 export const mockOnPanGestureUpdate = jest.fn();
 export const mockOnPanGestureEnd = jest.fn();
@@ -22,10 +22,10 @@ export const TapGestureMock = {
   }),
 };
 
-const initialCoinState = useCoinStore.getState();
+const initialMarketState = useMarketsStore.getState();
 const initialWatchlistState = useWatchlistStore.getState();
 
 export const resetStores = () => {
-  useCoinStore.setState(initialCoinState, true);
+  useMarketsStore.setState(initialMarketState, true);
   useWatchlistStore.setState(initialWatchlistState, true);
 };
