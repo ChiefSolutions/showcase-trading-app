@@ -2,10 +2,11 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { mockMarketsData } from '@/__mocks__/market-data';
 import { resetStores } from '@/__mocks__/test-utils';
-import { useDashboardSectionList } from '@/hooks';
+import { DASHBOARD_SECTION_NAME, DASHBOARD_SECTION_TYPE } from '@/constants';
+import { useWatchlistDashboardList } from '@/hooks';
 import { useWatchlistStore } from '@/stores';
 
-describe('useDashboardSectionList', () => {
+describe('use', () => {
   beforeEach(() => {
     act(() => {
       (global.fetch as jest.Mock).mockResolvedValue({
@@ -18,23 +19,11 @@ describe('useDashboardSectionList', () => {
 
   describe('when the hook is called', () => {
     it('should return the list', async () => {
-      const { result } = renderHook(() => useDashboardSectionList());
+      const { result } = renderHook(() => useWatchlistDashboardList());
 
       await waitFor(() => {
         expect(result.current).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({
-              type: 'SECTION_HEADER',
-              title: 'Most Popular',
-              copy: 'The most popular markets.',
-            }),
-            expect.objectContaining({
-              type: 'ITEM_ROW',
-              data: expect.objectContaining({
-                id: '1728e804-9bba-479e-a8b9-d085d03de334',
-                symbol: 'ETH-USD',
-              }),
-            }),
             expect.objectContaining({
               type: 'SECTION_HEADER',
               title: 'My Watchlist',
@@ -53,19 +42,38 @@ describe('useDashboardSectionList', () => {
   describe('when no empty state', () => {
     beforeEach(() => {
       act(() => {
-        useWatchlistStore.getState().add('131a0e7a-d094-4bef-88c0-3227db519300');
+        useWatchlistStore.getState().toggle(mockMarketsData[3]);
       });
     });
 
     it('should not return empty state', async () => {
-      const { result } = renderHook(() => useDashboardSectionList());
+      const { result } = renderHook(() => useWatchlistDashboardList());
 
       await waitFor(() => {
         expect(result.current).not.toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              type: 'EMPTY_STATE',
+              type: DASHBOARD_SECTION_TYPE.EMPTY_STATE,
               message: "You don't have any coins in your watchlist.",
+            }),
+          ]),
+        );
+
+        expect(result.current).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: DASHBOARD_SECTION_TYPE.SECTION_HEADER,
+              title: 'My Watchlist',
+              copy: 'Markets that have been added to your watchlist.',
+              style: {
+                marginTop: 20,
+              },
+            }),
+            expect.objectContaining({
+              type: DASHBOARD_SECTION_TYPE.ITEM_ROW,
+              data: mockMarketsData[3],
+              section: DASHBOARD_SECTION_NAME.WATCHLIST,
+              isWatched: true,
             }),
           ]),
         );

@@ -14,7 +14,7 @@ const WatchListComponent: FC = () => {
 
   const keyExtractor = (item: Market) => item.id;
   const renderCoinItem = useCallback(({ item }: { item: Market }) => {
-    return <MarketListItem market={item} />;
+    return <MarketListItem market={item} toggle={jest.fn} isWatched={false} />;
   }, []);
 
   return (

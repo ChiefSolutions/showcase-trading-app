@@ -1,67 +1,17 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 
-import { StyleSheet, View } from 'react-native';
-
-import { FlashList } from '@shopify/flash-list';
-
-import { AnimatedLogo } from '@/components/kit';
-import { MarketListItem } from '@/components/markets/list-tem';
-import { DASHBOARD_SECTION_TYPE } from '@/constants';
-import { useDashboardSectionList } from '@/hooks';
-import { dashboardListKeyExtractor } from '@/utils';
-
-import { DashboardSectionListItem, RenderDashboardListItem } from './dashboard.types';
-import { DashboardListEmptyState } from './empty-state';
-import { DashboardListSectionHeader } from './header';
+import { DashboardSectionListItem } from '@/components/dashboard-list/dashboard.types';
+import { DashboardListItems } from '@/components/dashboard-list/list';
+import { usePopularMarketsDashboardList } from '@/hooks/dashboard-section-list/popular-markets';
+import { useWatchlistDashboardList } from '@/hooks/dashboard-section-list/watch-list';
 
 export const DashboardList = () => {
-  const data = useDashboardSectionList();
+  const popularMarkets = usePopularMarketsDashboardList();
+  const watchlist = useWatchlistDashboardList();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     await fetchPopularMarkets();
-  //   })();
-  // }, [fetchPopularMarkets]);
+  const data = useMemo(() => {
+    return [...popularMarkets, ...watchlist] as DashboardSectionListItem[];
+  }, [popularMarkets, watchlist]);
 
-  const renderItem: RenderDashboardListItem = useCallback(({ item }) => {
-    const { type } = item;
-
-    switch (type) {
-      case DASHBOARD_SECTION_TYPE.SECTION_HEADER:
-        return <DashboardListSectionHeader {...item} />;
-      case DASHBOARD_SECTION_TYPE.ITEM_ROW:
-        return item.data ? <MarketListItem key={item.data.id} market={item.data} /> : null;
-      // return item.data ? <CoinListItem key={item.data.id} coin={item.data} /> : null;
-      case DASHBOARD_SECTION_TYPE.EMPTY_STATE:
-        return <DashboardListEmptyState message={item.message ?? ''} />;
-      default:
-        return null;
-    }
-  }, []);
-
-  const getItemType = useCallback((item: DashboardSectionListItem) => item.type, []);
-
-  return (
-    <View style={styles.flashListContainer}>
-      <FlashList
-        data={data}
-        renderItem={renderItem}
-        getItemType={getItemType}
-        keyExtractor={dashboardListKeyExtractor}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.flashListContent}
-        ListHeaderComponent={<AnimatedLogo height={100} width={'100%'} />}
-      ></FlashList>
-    </View>
-  );
+  return <DashboardListItems data={data} />;
 };
-
-const styles = StyleSheet.create({
-  flashListContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  flashListContent: {
-    paddingBottom: 40,
-  },
-});

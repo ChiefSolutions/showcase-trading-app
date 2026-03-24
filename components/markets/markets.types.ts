@@ -24,4 +24,6 @@ export interface Market {
 
 export interface MarketListItemProps {
   market: Market;
+  isWatched?: boolean;
+  toggle: (market: Market) => void;
 }

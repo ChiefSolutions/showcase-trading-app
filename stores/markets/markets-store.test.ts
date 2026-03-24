@@ -21,7 +21,7 @@ describe('useMarketsStore', () => {
 
       expect(state).toEqual({
         allIds: [],
-        marketsById: {},
+        markets: {},
         popular: [],
         loading: false,
         error: null,

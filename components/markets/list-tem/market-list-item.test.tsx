@@ -5,16 +5,15 @@ import { act, fireEvent, render, screen } from '@testing-library/react-native';
 
 import { mockMarketsData } from '@/__mocks__/market-data';
 import { MarketListItem } from '@/components/markets/list-tem/index';
-import { Market } from '@/components/markets/markets.types';
 
-const mockMarketData = mockMarketsData[5] as Market;
-
-const renderComponent = (market = mockMarketData) => {
-  render(<MarketListItem market={market} />);
-};
+const mockMarket = mockMarketsData[5];
 
 const mockToggle = jest.fn();
 const mockIsWatched = jest.fn();
+
+const renderComponent = (market = mockMarket, isWatched = false) => {
+  render(<MarketListItem market={market} isWatched={isWatched} toggle={mockToggle} />);
+};
 
 jest.mock('@/stores/watchlist', () => {
   return {
@@ -63,7 +62,7 @@ describe('Market', () => {
 
   describe('when the price change is up', () => {
     beforeEach(() => {
-      renderComponent({ ...mockMarketData, price_change_percentage_24h: 2 });
+      renderComponent({ ...mockMarket, price_change_percentage_24h: 2 });
     });
 
     it('reflects the price change going up', () => {
@@ -87,8 +86,7 @@ describe('Market', () => {
 
   describe('when the watchlist icon is pressed', () => {
     beforeEach(() => {
-      mockIsWatched.mockReturnValue(true);
-      renderComponent();
+      renderComponent(mockMarket, true);
     });
 
     it('should add the coin to watchlist and change the icon', () => {
@@ -99,7 +97,7 @@ describe('Market', () => {
       });
 
       expect(screen.getByTestId('watchlist-icon-selected')).toBeOnTheScreen();
-      expect(mockToggle).toHaveBeenCalledWith(mockMarketData.id);
+      expect(mockToggle).toHaveBeenCalledWith(mockMarket);
     });
   });
 });

@@ -1,4 +1,6 @@
-export const mockMarketsData = [
+import { Market } from '@/components/markets/markets.types';
+
+export const mockMarketsData: Market[] = [
   {
     id: '1002e6ef-808f-450a-bd5b-15067c9a6814',
     symbol: '(EURUSD=X)',

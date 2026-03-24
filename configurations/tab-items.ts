@@ -1,4 +1,4 @@
-import { DashboardTabIcon, PortfolioTabIcon } from '@/components/kit';
+import { DashboardTabIcon, MarketsTabIcon, PortfolioTabIcon } from '@/components/kit';
 
 export const tabItems = [
   {
@@ -7,6 +7,14 @@ export const tabItems = [
     options: {
       title: 'Dashboard',
       tabBarIcon: DashboardTabIcon,
+    },
+  },
+  {
+    id: '92433c3f-5fc6-4046-95d8-53975722cfbd',
+    name: 'markets',
+    options: {
+      title: 'Markets',
+      tabBarIcon: MarketsTabIcon,
     },
   },
   {
