@@ -12,10 +12,11 @@ import { ContextProviders } from '@/contexts';
 import { withContext } from '@/contexts/with-context';
 import { useTheme } from '@/theme';
 
-SplashScreen.setOptions({
-  duration: 1000,
-  fade: true,
-});
+//TODO - enable: 'Splashscreen.setOptions' cannot be used in Expo Go. To customize the splash screen, you can use development builds.
+// SplashScreen.setOptions({
+//   duration: 1000,
+//   fade: true,
+// });
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync().catch((err) => console.error(err));
 
@@ -28,7 +29,7 @@ function RootLayout() {
 
     const timeoutId = setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
   }, []);

@@ -6,9 +6,9 @@ import { DEFAULT_RESPONSE_NOT_OK_ERROR } from '@/constants/markets';
 
 interface MarketState {
   error: string | null;
-  fetchPopularMarkets: () => Promise<void>;
+  fetchPopularMarkets: (options?: RequestInit) => Promise<void>;
   getMarket: (id: string) => Market | undefined;
-  marketsById: Record<string, Market>;
+  markets: Record<string, Market>;
   allIds: string[];
   popular: Market[];
   loading: boolean;
@@ -18,18 +18,17 @@ interface MarketState {
 
 export const useMarketsStore = create<MarketState>((set, get) => ({
   allIds: [],
-  marketsById: {},
+  markets: {},
   popular: [],
   loading: false,
   error: null,
 
-  getMarket: (id) => get().marketsById[id],
+  getMarket: (id) => get().markets[id],
 
-  fetchPopularMarkets: async () => {
+  fetchPopularMarkets: async (options) => {
     set({ loading: true, error: null });
-
     try {
-      const response = await fetch(`${Config.apiUrl}markets/popular`, {});
+      const response = await fetch(`${Config.apiUrl}markets/popular`, options);
 
       if (!response.ok) {
         set({ loading: false, error: DEFAULT_RESPONSE_NOT_OK_ERROR });
@@ -46,7 +45,7 @@ export const useMarketsStore = create<MarketState>((set, get) => ({
         ids.push(market.id);
       }
 
-      set({ popular, loading: false, marketsById: byId, allIds: ids });
+      set({ popular, loading: false, markets: byId, allIds: ids });
     } catch (err) {
       set({ error: (err as Error).message, loading: false });
     }
@@ -61,14 +60,14 @@ export const useMarketsStore = create<MarketState>((set, get) => ({
     }
 
     set({
-      marketsById: byId,
+      markets: byId,
       allIds: ids,
     });
   },
 
   clear: () =>
     set({
-      marketsById: {},
+      markets: {},
       allIds: [],
     }),
 }));

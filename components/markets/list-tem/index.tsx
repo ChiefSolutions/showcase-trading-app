@@ -7,7 +7,6 @@ import * as Icons from '@/components/kit/icons';
 import { ChartLine } from '@/components/kit/line-chart';
 import { IconName, SvgIcon } from '@/components/kit/svg-icon';
 import { TEXT_TYPE } from '@/constants';
-import { useWatchlistStore } from '@/stores';
 import { staticColors, useStyles } from '@/theme';
 import { ThemeDefinitionColors } from '@/theme/types';
 import { formatCurrency, formatLineChartData, getPriceChangePercentIndicator, getPriceChangePercentage } from '@/utils';
@@ -15,10 +14,8 @@ import { formatCurrency, formatLineChartData, getPriceChangePercentIndicator, ge
 import { MarketListItemProps } from '../markets.types';
 
 const ATTRIBUTE_CLEARANCE = 3;
-const MarketListItemComponent: FC<MarketListItemProps> = ({ market }) => {
+const MarketListItemComponent: FC<MarketListItemProps> = ({ market, isWatched, toggle }) => {
   const styles = useStyles(_styles);
-  const isWatched = useWatchlistStore((s) => s.isWatched(market.id));
-  const toggle = useWatchlistStore((s) => s.toggle);
   const isUp = market.price_change_percentage_24h >= 0;
   const chartData = formatLineChartData(market.sparkline_7d, isUp);
 
@@ -39,8 +36,8 @@ const MarketListItemComponent: FC<MarketListItemProps> = ({ market }) => {
   }, []);
 
   const handleToggleWatchlist = useCallback(() => {
-    toggle(market.id);
-  }, [market.id, toggle]);
+    toggle(market);
+  }, [market, toggle]);
 
   return (
     <Pressable testID="market-pressable" style={pressableStyles}>

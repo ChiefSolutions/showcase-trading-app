@@ -1,70 +1,73 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Market } from '@/components/markets/markets.types';
 
-type WatchlistState = {
+interface WatchedState {
   watched: Set<string>;
+}
+
+type WatchlistState = {
+  markets: Record<string, Market>;
+  marketIds: string[];
   isWatched: (id: string) => boolean;
-  add: (id: string) => void;
-  getWatchedIds: () => string[];
-  getWatchedMarkets: (count: number, marketsById: Record<string, Market>) => Market[];
-  remove: (id: string) => void;
-  toggle: (id: string) => void;
+  getWatchedMarkets: () => Market[];
+  toggle: (market: Market) => void;
   clear: () => void;
 };
 
-export const useWatchlistStore = create<WatchlistState>((set, get) => ({
-  watched: new Set(),
+export const useWatchlistStore = create(
+  persist<WatchlistState>(
+    (set, get) => {
+      return {
+        markets: {},
+        marketIds: [],
 
-  isWatched: (id) => get().watched.has(id),
+        isWatched: (id) => {
+          return get().marketIds.includes(id);
+        },
 
-  add: (id) =>
-    set((state) => {
-      if (state.watched.has(id)) {
-        return state;
-      }
+        getWatchedMarkets: () => {
+          return Object.values(get().markets);
+        },
 
-      const next = new Set(state.watched);
+        toggle: (market) =>
+          set((state) => {
+            const exists = state.marketIds.includes(market.id);
 
-      next.add(id);
+            if (exists) {
+              const resultIds = state.marketIds.filter((id) => id !== market.id);
+              const { [market.id]: _, ...markets } = state.markets;
 
-      return { watched: next };
-    }),
+              return { ...state, marketIds: resultIds, markets };
+            }
 
-  getWatchedIds: () => Array.from(get().watched),
+            const marketIds = [...state.marketIds, market.id];
+            const markets = {
+              ...state.markets,
+              [market.id]: market,
+            };
 
-  getWatchedMarkets: (count, marketsById) => {
-    return Array.from(get().watched)
-      .slice(0, count)
-      .map((id) => marketsById[id])
-      .filter(Boolean);
-  },
+            return { ...state, markets, marketIds };
+          }),
 
-  remove: (id) =>
-    set((state) => {
-      if (!state.watched.has(id)) {
-        return state;
-      }
-
-      const next = new Set(state.watched);
-
-      next.delete(id);
-
-      return { watched: next };
-    }),
-
-  toggle: (id) =>
-    set((state) => {
-      const next = new Set(state.watched);
-
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-
-      return { watched: next };
-    }),
-
-  clear: () => set({ watched: new Set() }),
-}));
+        clear: () => set({ markets: {}, marketIds: [] }),
+      };
+    },
+    {
+      name: 'watchlist-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({
+        ...state,
+      }),
+      merge: (persistedState, currentState) => {
+        return {
+          ...currentState,
+          ...(persistedState as WatchedState),
+          watched: new Set((persistedState as WatchedState).watched || []),
+        };
+      },
+    },
+  ),
+);
