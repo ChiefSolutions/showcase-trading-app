@@ -1,3 +1,5 @@
+import { TextInputProps } from 'react-native';
+
 import { MARKET_TREND } from '@/constants/markets';
 
 export type MarketTrend = (typeof MARKET_TREND)[keyof typeof MARKET_TREND];
@@ -26,4 +28,19 @@ export interface MarketListItemProps {
   market: Market;
   isWatched?: boolean;
   toggle: (market: Market) => void;
+}
+
+export interface MarketTabItem {
+  id: string;
+  name: string;
+  nam_upper: string;
+}
+
+export interface MarketTabsProps {
+  items: MarketTabItem[];
+}
+
+export interface MarketSearchProps extends TextInputProps {
+  onChange: any;
+  value: string;
 }
